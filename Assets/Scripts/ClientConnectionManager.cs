@@ -61,7 +61,7 @@ namespace TMG.NFE_Tutorial
         private void OnButtonConnect()
         {
             DestroyLocalSimulationWorld();
-            SceneManager.LoadScene("Level_01_Background");
+            SceneManager.LoadScene("Level_00_Main");
             
             switch (_connectionModeDropdown.value)
             {
