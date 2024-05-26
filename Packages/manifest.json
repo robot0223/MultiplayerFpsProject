@@ -6,6 +6,7 @@
     "com.unity.entities.graphics": "1.2.1",
     "com.unity.feature.development": "1.0.1",
     "com.unity.netcode": "1.2.1",
+    "com.unity.postprocessing": "3.4.0",
     "com.unity.render-pipelines.high-definition": "14.0.11",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.7.6",
