@@ -39,7 +39,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 5.4695215, g: 3.3685088, b: 6.732603, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9924,7 +9924,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 356977532}
-  - component: {fileID: 356977531}
+  - component: {fileID: 356977533}
   m_Layer: 0
   m_Name: ConnectionManager
   m_TagString: Untagged
@@ -9932,21 +9932,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &356977531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 356977530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c33dc700ca3cfa4baf7b2ffe2d7da37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _connectionModeDropdown: {fileID: 1166900711}
-  _teamDropdown: {fileID: 0}
-  _connectButton: {fileID: 1313453996}
 --- !u!4 &356977532
 Transform:
   m_ObjectHideFlags: 0
@@ -9962,6 +9947,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &356977533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356977530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f5eb1ce28809074ca7b04ae88a1981e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _connectionModeDropdown: {fileID: 1166900711}
+  _teamDropdown: {fileID: 0}
+  _connectButton: {fileID: 1313453996}
 --- !u!1001 &363368396
 PrefabInstance:
   m_ObjectHideFlags: 0
