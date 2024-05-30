@@ -10,11 +10,14 @@ using UnityEngine.UI;
 
 public class ClientConnectionManager : MonoBehaviour
 {
+
+    [SerializeField] private string loadSceneName;
     // [SerializeField] private TMP_InputField _addressField;
     // [SerializeField] private TMP_InputField _portField;
     [SerializeField] private TMP_Dropdown _connectionModeDropdown;
     [SerializeField] private TMP_Dropdown _teamDropdown;
     [SerializeField] private Button _connectButton;
+
 
     private ushort Port => ushort.Parse("7979");
     private string Address => "127.0.0.1";
@@ -61,7 +64,7 @@ public class ClientConnectionManager : MonoBehaviour
     private void OnButtonConnect()
     {
         DestroyLocalSimulationWorld();
-        SceneManager.LoadScene("Level_00_Main");
+        SceneManager.LoadScene(loadSceneName);
 
         switch (_connectionModeDropdown.value)
         {
