@@ -39,7 +39,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 11.983796, g: 20.884756, b: 49.242714, a: 1}
+  m_IndirectSpecularColor: {r: 11.529254, g: 20.103176, b: 47.480076, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4015,7 +4015,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56ec6f5ef74d4854495b470241037467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sound: {fileID: 11400000, guid: 4bcc599dab565c243bcfa001ea68a6c4, type: 2}
 --- !u!82 &348781785
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4157,7 +4156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6e8fb9c77b08145828f203aff6c7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placementHeight: 0.5
 --- !u!220 &392240629
 LightProbeGroup:
   m_ObjectHideFlags: 0
@@ -6612,7 +6610,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6e8fb9c77b08145828f203aff6c7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placementHeight: 0.5
 --- !u!220 &457051154
 LightProbeGroup:
   m_ObjectHideFlags: 0
@@ -8864,7 +8861,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6e8fb9c77b08145828f203aff6c7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placementHeight: 0.5
 --- !u!220 &552791536
 LightProbeGroup:
   m_ObjectHideFlags: 0
@@ -9059,30 +9055,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7caf19a5e5d565846a9a055a73a9a12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materialOverrides:
-  - active: 1
-    material: {fileID: 2100000, guid: 133314aef1daf524b80cf3670a17ea34, type: 2}
-    propertyOverrideAsset: {fileID: 0}
-    propertyOverrides:
-    - propertyName: _BaseColor
-      type: 0
-      colValue: {r: 1.3424537, g: 1.4210198, b: 3.5135825, a: 0}
-      vecValue: {x: 0, y: 0, z: 0, w: 0}
-      floatValue: 0
-      texValue: {fileID: 0}
-  - active: 1
-    material: {fileID: 2100000, guid: a2332be378f0d1a498c12941ffb91ef1, type: 2}
-    propertyOverrideAsset: {fileID: 0}
-    propertyOverrides:
-    - propertyName: _BaseColor
-      type: 0
-      colValue: {r: 1.3449789, g: 5.5845866, b: 5.1517663, a: 1}
-      vecValue: {x: 0, y: 0, z: 0, w: 0}
-      floatValue: 0
-      texValue: {fileID: 0}
-  m_Renderers:
-  - {fileID: 1837883705}
-  m_Materials: []
 --- !u!1 &570488088
 GameObject:
   m_ObjectHideFlags: 0
@@ -11955,7 +11927,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c48e30b0f2e98464ba3890e5546c35d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamIndex: 0
 --- !u!114 &771869741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12089,7 +12060,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6e8fb9c77b08145828f203aff6c7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placementHeight: 0.1
 --- !u!220 &775986918
 LightProbeGroup:
   m_ObjectHideFlags: 0
@@ -12611,7 +12581,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6e8fb9c77b08145828f203aff6c7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placementHeight: 0.5
 --- !u!220 &824635413
 LightProbeGroup:
   m_ObjectHideFlags: 0
@@ -16351,7 +16320,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c48e30b0f2e98464ba3890e5546c35d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamIndex: 1
 --- !u!114 &1113754910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21952,7 +21920,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6e8fb9c77b08145828f203aff6c7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placementHeight: 0.1
 --- !u!220 &1393179529
 LightProbeGroup:
   m_ObjectHideFlags: 0
@@ -25122,7 +25089,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6e8fb9c77b08145828f203aff6c7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placementHeight: 0.1
 --- !u!220 &1603851684
 LightProbeGroup:
   m_ObjectHideFlags: 0
@@ -27230,7 +27196,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6e8fb9c77b08145828f203aff6c7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placementHeight: 0.5
 --- !u!1 &1797779614
 GameObject:
   m_ObjectHideFlags: 0
@@ -27276,7 +27241,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6e8fb9c77b08145828f203aff6c7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placementHeight: 0.5
 --- !u!220 &1797779617
 LightProbeGroup:
   m_ObjectHideFlags: 0
@@ -27694,12 +27658,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4959666876726382, guid: cdfb2df7d066b4b42a30f7f0713b7150,
     type: 3}
   m_PrefabInstance: {fileID: 1822962489}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &1837883705 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 210251591080606433, guid: 0cc7e0a60e50a9c47b845e53412c3f4b,
-    type: 3}
-  m_PrefabInstance: {fileID: 722176342}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1838762225
 GameObject:
