@@ -5,8 +5,37 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 100000, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
+      propertyPath: m_Name
+      value: Rock_Boulder_A
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 84
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 84
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 84
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 84
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 84
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -18,6 +47,10 @@ PrefabInstance:
     - target: {fileID: 400000, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
       propertyPath: m_LocalRotation.x
@@ -32,14 +65,6 @@ PrefabInstance:
       value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -192.175
       objectReference: {fileID: 0}
@@ -51,22 +76,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -476.606
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
-      propertyPath: m_Name
-      value: Rock_Boulder_A
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 84
-      objectReference: {fileID: 0}
-    - target: {fileID: 100004, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 84
-      objectReference: {fileID: 0}
-    - target: {fileID: 100002, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 84
-      objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 4294967295
@@ -75,10 +84,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 747adf63d61ccf24eb8b02ef84d8630f, type: 2}
-    - target: {fileID: 100006, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 84
-      objectReference: {fileID: 0}
     - target: {fileID: 2300002, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 4294967295
@@ -87,10 +92,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 747adf63d61ccf24eb8b02ef84d8630f, type: 2}
-    - target: {fileID: 100008, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 84
-      objectReference: {fileID: 0}
     - target: {fileID: 2300004, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 4294967295
@@ -99,5 +100,44 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 747adf63d61ccf24eb8b02ef84d8630f, type: 2}
+    - target: {fileID: 2300006, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 100004, guid: f5b09202ebaa99b41a90c8715a0cd9ad,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 759059180976642540}
   m_SourcePrefab: {fileID: 100100000, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
+--- !u!1 &4047168648073444354 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100004, guid: f5b09202ebaa99b41a90c8715a0cd9ad,
+    type: 3}
+  m_PrefabInstance: {fileID: 4047168648073345702}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &759059180976642540
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4047168648073444354}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300002, guid: f5b09202ebaa99b41a90c8715a0cd9ad, type: 3}
