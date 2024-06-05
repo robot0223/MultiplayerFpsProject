@@ -24,6 +24,7 @@ namespace FPS_personal_project
 
         public void OnUpdate(ref SystemState state)
         {
+            Debug.Log("We are updating!!");
             var ecb = new EntityCommandBuffer(Allocator.Temp);
             var characterPrefab = SystemAPI.GetSingleton<GamePrefabs>().Character;
 
@@ -31,6 +32,7 @@ namespace FPS_personal_project
             var gameStartProperties = SystemAPI.GetComponent<GameStartProperties>(gamePropertyEntity);
             var teamPlayerCounter = SystemAPI.GetComponent<TeamPlayerCounter>(gamePropertyEntity);
             var spawnOffsets = SystemAPI.GetBuffer<SpawnOffset>(gamePropertyEntity);
+
 
             foreach (var (teamRequest, requestSource, requestEntity) in
                      SystemAPI.Query<GameTeamRequest, ReceiveRpcCommandRequest>().WithEntityAccess())
@@ -99,7 +101,7 @@ namespace FPS_personal_project
 
                 ecb.AddComponent(requestSource.SourceConnection, new PlayerSpawnInfo
                 {
-                    MobaTeam = requestedTeamType,
+                    GameTeam = requestedTeamType,
                     SpawnPosition = spawnPosition
                 });
 

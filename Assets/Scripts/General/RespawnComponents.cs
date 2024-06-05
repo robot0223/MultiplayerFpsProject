@@ -23,7 +23,7 @@ namespace FPS_personal_project
 
     public struct PlayerSpawnInfo : IComponentData
     {
-        public TeamType MobaTeam;
+        public TeamType GameTeam;
         public float3 SpawnPosition;
     }
 
