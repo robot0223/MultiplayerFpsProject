@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Entities;
-using UnityEngine;
+﻿using Unity.Entities;
 
-namespace FPS_personal_project
+namespace TMG.NFE_Tutorial
 {
     public struct ClientTeamRequest : IComponentData
     {
         public TeamType Value;
     }
-
 }

@@ -1,11 +1,8 @@
 using Unity.Entities;
 using UnityEngine;
 
-
-namespace FPS_personal_project
+namespace TMG.NFE_Tutorial
 {
-
-
     public class MainCameraAuthoring : MonoBehaviour
     {
         public class MainCameraBaker : Baker<MainCameraAuthoring>

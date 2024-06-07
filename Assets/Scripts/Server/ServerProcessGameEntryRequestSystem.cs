@@ -1,14 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Collections;
+﻿using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Transforms;
 using UnityEngine;
 
-
-namespace FPS_personal_project
+namespace TMG.NFE_Tutorial
 {
     [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct ServerProcessGameEntryRequestSystem : ISystem
@@ -17,25 +14,23 @@ namespace FPS_personal_project
         {
             state.RequireForUpdate<NetworkTime>();
             state.RequireForUpdate<GameStartProperties>();
-            state.RequireForUpdate<GamePrefabs>();
-            var builder = new EntityQueryBuilder(Allocator.Temp).WithAll<GameTeamRequest, ReceiveRpcCommandRequest>();
+            state.RequireForUpdate<MobaPrefabs>();
+            var builder = new EntityQueryBuilder(Allocator.Temp).WithAll<MobaTeamRequest, ReceiveRpcCommandRequest>();
             state.RequireForUpdate(state.GetEntityQuery(builder));
         }
 
         public void OnUpdate(ref SystemState state)
         {
-            Debug.Log("We are updating!!");
             var ecb = new EntityCommandBuffer(Allocator.Temp);
-            var characterPrefab = SystemAPI.GetSingleton<GamePrefabs>().Character;
-
+            var championPrefab = SystemAPI.GetSingleton<MobaPrefabs>().Champion;
+            
             var gamePropertyEntity = SystemAPI.GetSingletonEntity<GameStartProperties>();
             var gameStartProperties = SystemAPI.GetComponent<GameStartProperties>(gamePropertyEntity);
             var teamPlayerCounter = SystemAPI.GetComponent<TeamPlayerCounter>(gamePropertyEntity);
             var spawnOffsets = SystemAPI.GetBuffer<SpawnOffset>(gamePropertyEntity);
-
-
-            foreach (var (teamRequest, requestSource, requestEntity) in
-                     SystemAPI.Query<GameTeamRequest, ReceiveRpcCommandRequest>().WithEntityAccess())
+            
+            foreach (var (teamRequest, requestSource, requestEntity) in 
+                     SystemAPI.Query<MobaTeamRequest, ReceiveRpcCommandRequest>().WithEntityAccess())
             {
                 ecb.DestroyEntity(requestEntity);
                 ecb.AddComponent<NetworkStreamInGame>(requestSource.SourceConnection);
@@ -46,11 +41,11 @@ namespace FPS_personal_project
                 {
                     if (teamPlayerCounter.BlueTeamPlayers > teamPlayerCounter.RedTeamPlayers)
                     {
-                        requestedTeamType = TeamType.B;
+                        requestedTeamType = TeamType.Red;
                     }
                     else if (teamPlayerCounter.BlueTeamPlayers <= teamPlayerCounter.RedTeamPlayers)
                     {
-                        requestedTeamType = TeamType.A;
+                        requestedTeamType = TeamType.Blue;
                     }
                 }
 
@@ -59,7 +54,7 @@ namespace FPS_personal_project
 
                 switch (requestedTeamType)
                 {
-                    case TeamType.A:
+                    case TeamType.Blue:
                         if (teamPlayerCounter.BlueTeamPlayers >= gameStartProperties.MaxPlayersPerTeam)
                         {
                             Debug.Log($"Blue Team is full. Client ID: {clientId} is spectating the game");
@@ -69,8 +64,8 @@ namespace FPS_personal_project
                         spawnPosition += spawnOffsets[teamPlayerCounter.BlueTeamPlayers].Value;
                         teamPlayerCounter.BlueTeamPlayers++;
                         break;
-
-                    case TeamType.B:
+                    
+                    case TeamType.Red:
                         if (teamPlayerCounter.RedTeamPlayers >= gameStartProperties.MaxPlayersPerTeam)
                         {
                             Debug.Log($"Red Team is full. Client ID: {clientId} is spectating the game");
@@ -80,33 +75,33 @@ namespace FPS_personal_project
                         spawnPosition += spawnOffsets[teamPlayerCounter.RedTeamPlayers].Value;
                         teamPlayerCounter.RedTeamPlayers++;
                         break;
-
+                    
                     default:
                         continue;
                 }
-
+                
                 Debug.Log($"Server is assigning Client ID: {clientId} to the {requestedTeamType.ToString()} team.");
-
-                var newChar = ecb.Instantiate(characterPrefab);
-                ecb.SetName(newChar, "Character");
+                
+                var newChamp = ecb.Instantiate(championPrefab);
+                ecb.SetName(newChamp, "Champion");
 
                 var newTransform = LocalTransform.FromPosition(spawnPosition);
-                ecb.SetComponent(newChar, newTransform);
-                ecb.SetComponent(newChar, new GhostOwner { NetworkId = clientId });
-                ecb.SetComponent(newChar, new GameTeam { Value = requestedTeamType });
+                ecb.SetComponent(newChamp, newTransform);
+                ecb.SetComponent(newChamp, new GhostOwner { NetworkId = clientId });
+                ecb.SetComponent(newChamp, new MobaTeam { Value = requestedTeamType });
 
-                ecb.AppendToBuffer(requestSource.SourceConnection, new LinkedEntityGroup { Value = newChar });
+                ecb.AppendToBuffer(requestSource.SourceConnection, new LinkedEntityGroup { Value = newChamp });
 
-                ecb.SetComponent(newChar, new NetworkEntityReference { Value = requestSource.SourceConnection });
-
+                ecb.SetComponent(newChamp, new NetworkEntityReference { Value = requestSource.SourceConnection });
+                
                 ecb.AddComponent(requestSource.SourceConnection, new PlayerSpawnInfo
                 {
-                    GameTeam = requestedTeamType,
+                    MobaTeam = requestedTeamType,
                     SpawnPosition = spawnPosition
                 });
 
-                ecb.SetComponent(requestSource.SourceConnection, new CommandTarget { targetEntity = newChar });
-
+                ecb.SetComponent(requestSource.SourceConnection, new CommandTarget { targetEntity = newChamp });
+                
                 var playersRemainingToStart = gameStartProperties.MinPlayersToStartGame - teamPlayerCounter.TotalPlayers;
 
                 var gameStartRpc = ecb.CreateEntity();
@@ -116,12 +111,12 @@ namespace FPS_personal_project
                     var ticksUntilStart = (uint)(simulationTickRate * gameStartProperties.CountdownTime);
                     var gameStartTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
                     gameStartTick.Add(ticksUntilStart);
-
+                    
                     ecb.AddComponent(gameStartRpc, new GameStartTickRpc
                     {
                         Value = gameStartTick
                     });
-
+                    
                     var gameStartEntity = ecb.CreateEntity();
                     ecb.AddComponent(gameStartEntity, new GameStartTick
                     {
@@ -134,10 +129,9 @@ namespace FPS_personal_project
                 }
                 ecb.AddComponent<SendRpcCommandRequest>(gameStartRpc);
             }
-
+            
             ecb.Playback(state.EntityManager);
             SystemAPI.SetSingleton(teamPlayerCounter);
         }
     }
 }
-

@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Entities;
+﻿using Unity.Entities;
 using UnityEngine;
 
-
-namespace FPS_personal_project
+namespace TMG.NFE_Tutorial
 {
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial class InitializeMainCameraSystem : SystemBase
@@ -13,7 +10,7 @@ namespace FPS_personal_project
         {
             RequireForUpdate<MainCameraTag>();
         }
-
+        
         protected override void OnUpdate()
         {
             Enabled = false;
@@ -22,4 +19,3 @@ namespace FPS_personal_project
         }
     }
 }
-

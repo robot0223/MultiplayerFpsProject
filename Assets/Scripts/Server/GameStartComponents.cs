@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Entities;
+﻿using Unity.Entities;
 using Unity.Mathematics;
-using UnityEngine;
 
-namespace FPS_personal_project
+namespace TMG.NFE_Tutorial
 {
     public struct GameStartProperties : IComponentData
     {
@@ -17,10 +14,10 @@ namespace FPS_personal_project
     {
         public int BlueTeamPlayers;
         public int RedTeamPlayers;
-
+        
         public int TotalPlayers => BlueTeamPlayers + RedTeamPlayers;
     }
-
+    
     public struct SpawnOffset : IBufferElementData
     {
         public float3 Value;

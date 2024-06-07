@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Collections;
+﻿using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
-using UnityEngine;
 
-namespace FPS_personal_project
+namespace TMG.NFE_Tutorial
 {
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
     public partial struct ClientRequestGameEntrySystem : ISystem
@@ -30,7 +27,7 @@ namespace FPS_personal_project
             {
                 ecb.AddComponent<NetworkStreamInGame>(pendingNetworkId);
                 var requestTeamEntity = ecb.CreateEntity();
-                ecb.AddComponent(requestTeamEntity, new GameTeamRequest { Value = requestedTeam });
+                ecb.AddComponent(requestTeamEntity, new MobaTeamRequest { Value = requestedTeam });
                 ecb.AddComponent(requestTeamEntity, new SendRpcCommandRequest { TargetConnection = pendingNetworkId });
             }
 
@@ -38,4 +35,3 @@ namespace FPS_personal_project
         }
     }
 }
-
