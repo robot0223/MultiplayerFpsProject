@@ -27,7 +27,7 @@ namespace FPS_personal_project
                     _ => new float4(1)
                 };
 
-                ecb.SetComponent(newCharacterEntity, new URPMaterialPropertyBaseColor { Value = teamColor });
+               // ecb.SetComponent(newCharacterEntity, new URPMaterialPropertyBaseColor { Value = teamColor });
                 ecb.RemoveComponent<NewChampTag>(newCharacterEntity);
                 ecb.RemoveComponent<NewMinionTag>(newCharacterEntity);
             }

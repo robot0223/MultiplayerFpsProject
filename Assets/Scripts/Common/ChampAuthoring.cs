@@ -16,7 +16,7 @@ namespace FPS_personal_project
                 AddComponent<ChampTag>(entity);
                 AddComponent<NewChampTag>(entity);
                 AddComponent<MobaTeam>(entity);
-                AddComponent<URPMaterialPropertyBaseColor>(entity);
+                //AddComponent<URPMaterialPropertyBaseColor>(entity);
                 AddComponent<ChampMoveTargetPosition>(entity);
                 AddComponent(entity, new CharacterMoveSpeed { Value = authoring.MoveSpeed });
                 AddComponent<AbilityInput>(entity);

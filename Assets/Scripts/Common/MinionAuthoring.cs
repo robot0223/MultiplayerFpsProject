@@ -19,7 +19,7 @@ namespace FPS_personal_project
                 AddComponent<MinionPathIndex>(entity);
                 AddBuffer<MinionPathPosition>(entity);
                 AddComponent<MobaTeam>(entity);
-                AddComponent<URPMaterialPropertyBaseColor>(entity);
+               // AddComponent<URPMaterialPropertyBaseColor>(entity);
             }
         }
     }

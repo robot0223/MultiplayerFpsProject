@@ -9,13 +9,13 @@ namespace FPS_personal_project
     [UpdateInGroup(typeof(GhostInputSystemGroup))]
     public partial class ChampMoveInputSystem : SystemBase
     {
-        private MobaInputActions _inputActions;
+        //private MobaInputActions _inputActions;
         private CollisionFilter _selectionFilter;
 
         protected override void OnCreate()
         {
             RequireForUpdate<GamePlayingTag>();
-            _inputActions = new MobaInputActions();
+           // _inputActions = new MobaInputActions();
             _selectionFilter = new CollisionFilter
             {
                 BelongsTo = 1 << 5, // Raycasts
@@ -26,14 +26,14 @@ namespace FPS_personal_project
         
         protected override void OnStartRunning()
         {
-            _inputActions.Enable();
-            _inputActions.GameplayMap.SelectMovePosition.performed += OnSelectMovePosition;
+          //  _inputActions.Enable();
+           // _inputActions.GameplayMap.SelectMovePosition.performed += OnSelectMovePosition;
         }
 
         protected override void OnStopRunning()
         {
-            _inputActions.GameplayMap.SelectMovePosition.performed -= OnSelectMovePosition;
-            _inputActions.Disable();
+          //  _inputActions.GameplayMap.SelectMovePosition.performed -= OnSelectMovePosition;
+          //  _inputActions.Disable();
         }
 
         private void OnSelectMovePosition(InputAction.CallbackContext obj)
