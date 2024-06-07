@@ -2,7 +2,7 @@
 using Unity.Entities;
 using Unity.Transforms;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
     public partial struct SpawnMinionSystem : ISystem

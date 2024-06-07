@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using UnityEngine;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial class InitializeMainCameraSystem : SystemBase

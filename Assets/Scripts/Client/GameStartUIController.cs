@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     public class GameStartUIController : MonoBehaviour
     {

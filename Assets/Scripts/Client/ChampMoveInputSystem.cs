@@ -4,7 +4,7 @@ using Unity.Physics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     [UpdateInGroup(typeof(GhostInputSystemGroup))]
     public partial class ChampMoveInputSystem : SystemBase

@@ -1,7 +1,7 @@
 ﻿using System;
 using Unity.Entities;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     public partial class GameOverSystem : SystemBase
     {

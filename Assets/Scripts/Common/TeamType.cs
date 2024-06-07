@@ -1,4 +1,4 @@
-﻿namespace TMG.NFE_Tutorial
+﻿namespace FPS_personal_project
 {
     public enum TeamType : byte
     {

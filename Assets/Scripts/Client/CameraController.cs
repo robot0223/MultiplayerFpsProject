@@ -2,7 +2,7 @@
 using Unity.Entities;
 using UnityEngine;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     public class CameraController : MonoBehaviour
     {

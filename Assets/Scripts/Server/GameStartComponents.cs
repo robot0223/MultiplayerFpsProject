@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using Unity.Mathematics;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     public struct GameStartProperties : IComponentData
     {

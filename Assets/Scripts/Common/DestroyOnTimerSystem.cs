@@ -2,7 +2,7 @@
 using Unity.Entities;
 using Unity.NetCode;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
     public partial struct DestroyOnTimerSystem : ISystem

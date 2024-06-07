@@ -3,7 +3,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
     public partial class ClientStartGameSystem : SystemBase

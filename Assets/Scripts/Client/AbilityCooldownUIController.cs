@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     public class AbilityCooldownUIController : MonoBehaviour
     {

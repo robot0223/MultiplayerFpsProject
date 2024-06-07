@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using Unity.NetCode;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     [WorldSystemFilter(WorldSystemFilterFlags.ThinClientSimulation)]
     [UpdateInGroup(typeof(GhostInputSystemGroup))]

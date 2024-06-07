@@ -3,7 +3,7 @@ using Unity.Entities;
 using Unity.NetCode;
 using Unity.Transforms;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
     public partial struct InitializeLocalChampSystem : ISystem

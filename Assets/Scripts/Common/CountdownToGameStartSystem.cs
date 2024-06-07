@@ -4,7 +4,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
     public partial class CountdownToGameStartSystem : SystemBase

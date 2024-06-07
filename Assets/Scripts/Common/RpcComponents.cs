@@ -1,6 +1,6 @@
 ﻿using Unity.NetCode;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     public struct MobaTeamRequest : IRpcCommand
     {

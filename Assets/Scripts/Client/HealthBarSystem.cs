@@ -3,7 +3,7 @@ using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     [UpdateAfter(typeof(TransformSystemGroup))]
     [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]

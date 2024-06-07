@@ -2,7 +2,7 @@
 using Unity.Mathematics;
 using Unity.NetCode;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     public struct MinionTag : IComponentData {}
     public struct NewMinionTag : IComponentData {}

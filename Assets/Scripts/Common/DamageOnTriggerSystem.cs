@@ -4,7 +4,7 @@ using Unity.Entities;
 using Unity.Physics;
 using Unity.Physics.Systems;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     [UpdateInGroup(typeof(PhysicsSystemGroup))]
     [UpdateAfter(typeof(PhysicsSimulationGroup))]

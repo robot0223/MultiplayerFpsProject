@@ -5,7 +5,7 @@ using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Rendering;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     [UpdateInGroup(typeof(SimulationSystemGroup), OrderFirst = true)]
     public partial struct InitializeCharacterSystem : ISystem

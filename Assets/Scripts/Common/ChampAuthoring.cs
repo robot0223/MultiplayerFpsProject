@@ -2,7 +2,7 @@ using Unity.Entities;
 using Unity.Rendering;
 using UnityEngine;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     public class ChampAuthoring : MonoBehaviour
     {

@@ -2,7 +2,7 @@
 using Unity.Mathematics;
 using Unity.Transforms;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     public readonly partial struct AoeAspect : IAspect
     {

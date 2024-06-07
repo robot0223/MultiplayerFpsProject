@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     [RequireComponent(typeof(SpriteRenderer))]
     public class SkillShotVisualDelay : MonoBehaviour

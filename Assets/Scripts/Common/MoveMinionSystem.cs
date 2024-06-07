@@ -4,7 +4,7 @@ using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Transforms;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
     public partial struct MoveMinionSystem : ISystem

@@ -4,7 +4,7 @@ using Unity.NetCode;
 using Unity.Transforms;
 using UnityEngine;
 
-namespace TMG.NFE_Tutorial
+namespace FPS_personal_project
 {
     [UpdateInGroup(typeof(PredictedSimulationSystemGroup), OrderLast = true)]
     public partial struct DestroyEntitySystem : ISystem
