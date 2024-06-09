@@ -6590,7 +6590,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfa9dbb4564e4aaea3d87ef4ef7ded41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Champion: {fileID: 0}
+  Champion: {fileID: 6076246558047453058, guid: 70b6d2d2bccfe994db7f1c5c564363c4,
+    type: 3}
   Minion: {fileID: 0}
   GameOverEntity: {fileID: 0}
   RespawnEntity: {fileID: 0}
