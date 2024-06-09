@@ -7,13 +7,13 @@ namespace FPS_personal_project
     {
         [Header("Entities")]
         public GameObject Champion;
-        public GameObject Minion;
+        //public GameObject Minion;
         public GameObject GameOverEntity;
         public GameObject RespawnEntity;
         
         [Header("GameObjects")]
         public GameObject HealthBarPrefab;
-        public GameObject SkillShotAimPrefab;
+        //public GameObject SkillShotAimPrefab;
         
         public class MobaPrefabsBaker : Baker<MobaPrefabsAuthoring>
         {
@@ -23,7 +23,7 @@ namespace FPS_personal_project
                 AddComponent(prefabContainerEntity, new MobaPrefabs
                 {
                     Champion = GetEntity(authoring.Champion, TransformUsageFlags.Dynamic),
-                    Minion = GetEntity(authoring.Minion, TransformUsageFlags.Dynamic),
+                   // Minion = GetEntity(authoring.Minion, TransformUsageFlags.Dynamic),
                     GameOverEntity = GetEntity(authoring.GameOverEntity, TransformUsageFlags.None),
                     RespawnEntity = GetEntity(authoring.RespawnEntity, TransformUsageFlags.None)
                 });
@@ -31,7 +31,7 @@ namespace FPS_personal_project
                 AddComponentObject(prefabContainerEntity, new UIPrefabs
                 {
                     HealthBar = authoring.HealthBarPrefab,
-                    SkillShot = authoring.SkillShotAimPrefab
+                    //SkillShot = authoring.SkillShotAimPrefab
                 });
             }
         }

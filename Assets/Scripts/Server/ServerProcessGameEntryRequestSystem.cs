@@ -60,8 +60,8 @@ namespace FPS_personal_project
                             Debug.Log($"Blue Team is full. Client ID: {clientId} is spectating the game");
                             continue;
                         }
-                        spawnPosition = new float3(-50f, 1f, -50f);
-                        spawnPosition += spawnOffsets[teamPlayerCounter.BlueTeamPlayers].Value;
+                        spawnPosition = new float3(-80f, 13f, -34f);
+                        //spawnPosition += spawnOffsets[teamPlayerCounter.BlueTeamPlayers].Value;
                         teamPlayerCounter.BlueTeamPlayers++;
                         break;
                     
@@ -71,8 +71,8 @@ namespace FPS_personal_project
                             Debug.Log($"Red Team is full. Client ID: {clientId} is spectating the game");
                             continue;
                         }
-                        spawnPosition = new float3(50f, 1f, 50f);
-                        spawnPosition += spawnOffsets[teamPlayerCounter.RedTeamPlayers].Value;
+                        spawnPosition = new float3(75f, 13f, -30f);
+                        //spawnPosition += spawnOffsets[teamPlayerCounter.RedTeamPlayers].Value;
                         teamPlayerCounter.RedTeamPlayers++;
                         break;
                     
