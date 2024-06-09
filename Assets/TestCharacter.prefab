@@ -118,7 +118,9 @@ GameObject:
   - component: {fileID: 623560460432206538}
   - component: {fileID: 659562060979470711}
   - component: {fileID: 1532176831228726529}
-  - component: {fileID: 127422734305185102}
+  - component: {fileID: 8151798691791820391}
+  - component: {fileID: 6666451314606646029}
+  - component: {fileID: 4251341823242278250}
   m_Layer: 0
   m_Name: TestCharacter
   m_TagString: Untagged
@@ -176,7 +178,7 @@ MonoBehaviour:
   TrackInterpolationDelay: 0
   GhostGroup: 0
   UsePreSerialization: 0
---- !u!114 &127422734305185102
+--- !u!114 &8151798691791820391
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -185,7 +187,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 6076246558047453058}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1a640d6fcf773f4cb2aab98e5f0dd37, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bce517cb57c4b50b142b52f29be743c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 0
+  MoveSpeed: 2.5
+--- !u!114 &6666451314606646029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6076246558047453058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b14434db1f064903a63e2b53c9784e08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHitPoints: 0
+  HealthBarOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &4251341823242278250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6076246558047453058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc11f427908346cbb0ce60a915d987f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AoeAbility: {fileID: 0}
+  SkillShotAbility: {fileID: 0}
+  AoeAbilityCooldown: 0
+  SkillShotAbilityCooldown: 0
+  NetCodeConfig: {fileID: 11400000, guid: 06dfa9f237b786f44875ebcd3deaf9aa, type: 2}
