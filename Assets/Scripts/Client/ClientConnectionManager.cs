@@ -10,14 +10,16 @@ namespace FPS_personal_project
 {
     public class ClientConnectionManager : MonoBehaviour
     {
-        [SerializeField] private TMP_InputField _addressField;
-        [SerializeField] private TMP_InputField _portField;
+       /* [SerializeField] private TMP_InputField _addressField;
+        [SerializeField] private TMP_InputField _portField;*/
         [SerializeField] private TMP_Dropdown _connectionModeDropdown;
         [SerializeField] private TMP_Dropdown _teamDropdown;
         [SerializeField] private Button _connectButton;
-        
-        private ushort Port => ushort.Parse(_portField.text);
-        private string Address => _addressField.text;
+
+        public string loadSceneName = "Level_00_Main";
+
+        private ushort Port => ushort.Parse("7979");
+        private string Address => "127.0.0.1";
 
         private void OnEnable()
         {
@@ -61,7 +63,7 @@ namespace FPS_personal_project
         private void OnButtonConnect()
         {
             DestroyLocalSimulationWorld();
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(loadSceneName);
             
             switch (_connectionModeDropdown.value)
             {
