@@ -6536,7 +6536,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 693474918}
-  - component: {fileID: 693474917}
   - component: {fileID: 693474919}
   m_Layer: 0
   m_Name: PrefabContainer
@@ -6545,24 +6544,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &693474917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 693474916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e22b60219ac07148b8feb56b5bb88ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Character: {fileID: 6076246558047453058, guid: 70b6d2d2bccfe994db7f1c5c564363c4,
-    type: 3}
-  GameOverEntity: {fileID: 0}
-  RespawnEntity: {fileID: 0}
-  HealthBarPrefab: {fileID: 0}
-  SkillShotAimPrefab: {fileID: 0}
 --- !u!4 &693474918
 Transform:
   m_ObjectHideFlags: 0
