@@ -5,7 +5,6 @@
     "com.unity.entities.graphics": "1.2.3",
     "com.unity.feature.development": "1.0.1",
     "com.unity.inputsystem": "1.7.0",
-    "com.unity.netcode": "1.2.3",
     "com.unity.nuget.mono-cecil": "1.10.2",
     "com.unity.physics": "1.2.1",
     "com.unity.postprocessing": "3.4.0",
