@@ -1,0 +1,4 @@
+repository "FPS_personal_project@fydy0223@cloud"
+  path "/"
+    br "/main"
+    co "/main"
