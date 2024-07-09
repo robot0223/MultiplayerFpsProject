@@ -1,0 +1,36 @@
+Photon Fusion Animation Controller Addon - Release History
+
+Last tested with Fusion SDK 2.0.0 Stable 834
+
+2.0.6
+- Removed temporary fix for incorrect interpolation data - fixed in 2.0.0 Stable 834.
+
+Version 2.0.5
+- Removed RenderTimeframe override on proxy interpolation.
+- Removed AnimationController.Interpolate() methods, interpolation is now handled exclusively by render update.
+
+Version 2.0.4
+- Removed replication modes.
+
+Version 2.0.3
+Important
+============================================================
+! Animation Controller proxy is no longer simulated by default. If you call Runner.SetIsSimulated(Object, true) from other script, the controller will behave as predicted.
+
+Changes
+============================================================
+- Removed Runner.SetIsSimulated(Object, true) from Animation Controller - proxies are no longer simulated.
+- Removed proxy behavior from controller - now the fixed simulation is driven by Runner.SetIsSimulated().
+- Removed optional proxy interpolation in fixed update.
+
+Version 2.0.2
+- Changed root namespace from Fusion.AnimationController to Fusion.Addons.AnimationController.
+
+Version 2.0.1
+- Added support for custom replication.
+- Added support for proxy prediction.
+- Performance optimizations.
+- Fixed Shared Mode.
+
+Version 2.0.0
+- Initial release.

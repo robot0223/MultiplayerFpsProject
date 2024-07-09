@@ -1,0 +1,18 @@
+Photon Fusion Interest Management Addon - Release History
+
+Last tested with Fusion SDK 2.0.0 Build 834
+
+Version 2.0.1
+- Added last player interest update tick.
+- Added gizmos for objects in player interest.
+- Added callbacks before/after player interest update.
+- Added list of objects in player interest to Player Interest Manager inspector.
+- Added method to request player interest update after an important action so the player gets data as soon as possible.
+- Added method to refresh player properties with immediate effect. This is useful after switching input authority of Player Interest Manager.
+- Interest update is now limited to forward ticks by default - override CanUpdatePlayerInterest() for custom filtering.
+- Player interest view updates its properties also on clients.
+- Runtime interest providers are updated also on clients.
+- Added Interest Cell Size selector to Global Interest Manager inspector.
+
+Version 2.0.0
+- Initial release.
