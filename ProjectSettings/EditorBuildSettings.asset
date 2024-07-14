@@ -8,10 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/OutdoorsScene.unity
     guid: 8124e5870f4fd4c779e7a5f994e84ad1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level_Menu/Level_Menu_Background.unity
     guid: 27c1d8e6276abfc469679eaef8b20292
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level_01/Level_01_Background.unity
     guid: a620cc307224b94448eee652482b20db
   - enabled: 1

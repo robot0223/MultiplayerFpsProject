@@ -8,14 +8,18 @@ public class Spawner : MonoBehaviour, INetworkRunnerCallbacks
 {
     [Header("Player")]
     [SerializeField]
-    NetworkPlayer playerPrefab;
+    NetworkPrefabRef playerPrefab;
+
+    private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if(runner.IsServer)
         {
             Debug.Log("OnPlayerJoined you are Server. Spawning player.");
-            NetworkPlayer spawnedNetworkPlayer = runner.Spawn(playerPrefab, new Vector3(79,16,-31), Quaternion.identity, player);
+            NetworkObject spawnedNetworkPlayer = runner.Spawn(playerPrefab, new Vector3(79,16,-31), Quaternion.identity, player);
+
+            _spawnedCharacters.Add(player, spawnedNetworkPlayer);
         }
     }
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) { }

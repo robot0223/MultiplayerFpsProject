@@ -1,4 +1,5 @@
 using Fusion;
+using Fusion.Addons.KCC;
 using Fusion.Sockets;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,12 @@ using UnityEngine.SceneManagement;
 
 public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCallbacks
 {
+    public PlayerMovementHandler LocalPlayer;
+
+    public Vector2 AccumulatedMouseDelta => mouseDeltaAccumulator.AccumulatedValue;
+
     private NetInput accumulatedInput;
+    private Vector2Accumulator mouseDeltaAccumulator = new(0.02f , true);
     private bool resetInput;
 
     public void BeforeUpdate()
@@ -42,7 +48,7 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
         {
             Vector2 mouseDelta = mouse.delta.ReadValue();
             Vector2 lookRotationDelta = new(mouseDelta.y *-1, mouseDelta.x);//got to reverse the y value because mousedelta and fps y exis movement is opposite
-            accumulatedInput.LookDelta += lookRotationDelta;
+            mouseDeltaAccumulator.Accumulate(lookRotationDelta);
             if (mouse.leftButton.wasPressedThisFrame)
             {
                 if (Cursor.lockState == CursorLockMode.None)
@@ -72,13 +78,13 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
             Vector2 moveDirection = Vector2.zero;
 
             if (keyboard.wKey.isPressed)
-                moveDirection = Vector2.up;
+                moveDirection += Vector2.up;
             if (keyboard.sKey.isPressed)
-                moveDirection = Vector2.down;
+                moveDirection += Vector2.down;
             if (keyboard.aKey.isPressed)
-                moveDirection = Vector2.left;
+                moveDirection += Vector2.left;
             if (keyboard.dKey.isPressed)
-                moveDirection = Vector2.right;
+                moveDirection += Vector2.right;
 
             accumulatedInput.Direction += moveDirection;
             buttons.Set(InputButton.Jump, keyboard.spaceKey.isPressed);
@@ -104,11 +110,12 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
         accumulatedInput.Direction.Normalize();
+        accumulatedInput.LookDelta = mouseDeltaAccumulator.ConsumeTickAligned(runner);
         input.Set(accumulatedInput);
         resetInput = true;
-
+        //the below code is now handled by the above code(consumeTickAligned)
         //have to reset the lookdelta immediately because we don't want mouse input being reused if another frame is executed during this same frame
-        accumulatedInput.LookDelta = default;
+        //accumulatedInput.LookDelta = default;
     }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
