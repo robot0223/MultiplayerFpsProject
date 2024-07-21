@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterPresentation1P : MonoBehaviour
+public class CharacterPresentation : MonoBehaviour
 {
-    [SerializeField] private GameObject Weapon1P;
+    [SerializeField] private GameObject Weapon;
     [SerializeField] private GameObject ArmAttachBone;
-    [SerializeField] private GameObject WeaponAttachBone;
+    //[SerializeField] private GameObject WeaponAttachBone;
 
     private Camera PlayerCam;
 
@@ -28,7 +28,7 @@ public class CharacterPresentation1P : MonoBehaviour
 
     private void AttachWeapon1P()
     {
-        Weapon1P.transform.position = ArmAttachBone.transform.position;
-        Weapon1P.transform.rotation = ArmAttachBone.transform.rotation;
+        Weapon.transform.position = ArmAttachBone.transform.position;
+        Weapon.transform.rotation = ArmAttachBone.transform.rotation;
     }
 }

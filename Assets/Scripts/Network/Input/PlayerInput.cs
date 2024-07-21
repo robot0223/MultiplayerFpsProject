@@ -2,7 +2,6 @@ using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.EventSystems.PointerEventData;
 using UnityEngine.InputSystem;
 using Fusion.Addons.SimpleKCC;
 //using Fusion.Addons.KCC;
@@ -10,20 +9,22 @@ using Fusion.Addons.SimpleKCC;
 [DefaultExecutionOrder(-10)]
 public sealed class PlayerInput : NetworkBehaviour, IBeforeUpdate
 {
-    public static float LookSensitivity;
+    //TODO:link this to menu's sensetivity
+    public static float LookSensitivity = 50f;
 
-    private NetInput _accumulatedInput;
+    private NetworkedInput _accumulatedInput;
     private Vector2Accumulator _lookRotationAccumulator = new Vector2Accumulator(0.02f, true);
 
     public override void Spawned()
     {
         if (HasInputAuthority == false)
             return;
-
+        Debug.Log("player inpupt spawn with input auth");
         // Register to Fusion input poll callback.
         var networkEvents = Runner.GetComponent<NetworkEvents>();
         networkEvents.OnInput.AddListener(OnInput);
-
+        
+        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -63,7 +64,7 @@ public sealed class PlayerInput : NetworkBehaviour, IBeforeUpdate
                 Cursor.visible = false;
             }
         }
-
+        
         // Accumulate input only if the cursor is locked.
         if (Cursor.lockState != CursorLockMode.Locked)
             return;
@@ -71,13 +72,15 @@ public sealed class PlayerInput : NetworkBehaviour, IBeforeUpdate
         var mouse = Mouse.current;
         if (mouse != null)
         {
+            
             var mouseDelta = mouse.delta.ReadValue();
 
             var lookRotationDelta = new Vector2(-mouseDelta.y, mouseDelta.x);
             lookRotationDelta *= LookSensitivity / 60f;
             _lookRotationAccumulator.Accumulate(lookRotationDelta);
+            
 
-           // _accumulatedInput.Buttons.Set(InputButton.Fire, mouse.leftButton.isPressed);
+            _accumulatedInput.Buttons.Set(EInputButton.Fire, mouse.leftButton.isPressed);
         }
 
         if (keyboard != null)
@@ -91,9 +94,9 @@ public sealed class PlayerInput : NetworkBehaviour, IBeforeUpdate
 
             _accumulatedInput.MoveDirection = moveDirection.normalized;
 
-            _accumulatedInput.Buttons.Set(InputButton.Jump, keyboard.spaceKey.isPressed);
-           /* _accumulatedInput.Buttons.Set(InputButton.Reload, keyboard.rKey.isPressed);
-            _accumulatedInput.Buttons.Set(InputButton.Pistol, keyboard.digit1Key.isPressed || keyboard.numpad1Key.isPressed);
+            _accumulatedInput.Buttons.Set(EInputButton.Jump, keyboard.spaceKey.isPressed);
+           _accumulatedInput.Buttons.Set(EInputButton.Reload, keyboard.rKey.isPressed);
+             /*_accumulatedInput.Buttons.Set(InputButton.Pistol, keyboard.digit1Key.isPressed || keyboard.numpad1Key.isPressed);
             _accumulatedInput.Buttons.Set(InputButton.Rifle, keyboard.digit2Key.isPressed || keyboard.numpad2Key.isPressed);
             _accumulatedInput.Buttons.Set(InputButton.Shotgun, keyboard.digit3Key.isPressed || keyboard.numpad3Key.isPressed);
             _accumulatedInput.Buttons.Set(InputButton.Spray, keyboard.fKey.isPressed);*/
