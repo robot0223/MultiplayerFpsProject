@@ -16,7 +16,7 @@ namespace FPS_personal_project
     {
         [Header("Components")]
         public SimpleKCC KCC;
-       public Weapons Weapons;
+        public Weapons Weapons;
         public Health Health;
         public Animator Animator;
         public HitboxRoot HitboxRoot;
@@ -50,7 +50,7 @@ namespace FPS_personal_project
 
         private bool doubleJump;
 
-        // private SceneObjects _sceneObjects;
+        private SceneObjects _sceneObjects;
 
         public void PlayFireEffect()
         {
@@ -95,20 +95,21 @@ namespace FPS_personal_project
 
             }
 
-            //_sceneObjects = Runner.GetSingleton<SceneObjects>();
+            _sceneObjects = Runner.GetSingleton<SceneObjects>();
         }
        
         public override void FixedUpdateNetwork()
         {
-            Debug.LogWarning(Health.IsAlive);
+            
            
 
-           /* if (_sceneObjects.Gameplay.State == EGameplayState.Finished)
+            if (_sceneObjects.Gameplay.State == EGamePlayState.Finished)
             {
                 // After gameplay is finished we still want the player to finish movement and not stuck in the air.
                 MovePlayer();
                 return;
             }
+           
 
             if (Health.IsAlive == false)
             {
@@ -124,7 +125,7 @@ namespace FPS_personal_project
                 // Force enable third person visual for local player.
                 SetFirstPersonVisuals(false);
                 return;
-            }*/
+            }
 
 
             //Debug.Log("Player.cs fixed update network");

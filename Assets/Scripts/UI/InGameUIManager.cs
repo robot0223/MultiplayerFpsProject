@@ -24,7 +24,11 @@ namespace FPS_personal_project
                     if (player.GetComponent<NetworkBehaviour>().HasInputAuthority)
                         localPlayer = player.GetComponent<Player>();
                 }
-                Debug.LogWarning("local Player" +localPlayer != null);
+               
+                if(localPlayer!= null)
+                {
+                    HealthText.text = localPlayer.GetComponent<Player>().Health.CurrentHealth.ToString();
+                }
             }
         }
 

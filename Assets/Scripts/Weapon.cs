@@ -79,7 +79,7 @@ namespace FPS_personal_project
         private int _visibleFireCount;
         private bool _reloadingVisible;
         private VisualEffect _muzzleEffectInstance;
-       // private SceneObjects _sceneObjects;
+        private SceneObjects _sceneObjects;
 
         public void Fire(Vector3 firePosition, Vector3 fireDirection, bool justPressed)
         {
@@ -178,7 +178,7 @@ namespace FPS_personal_project
            /* _muzzleEffectInstance = Instantiate(MuzzleEffectPrefab, HasInputAuthority ? FirstPersonMuzzleTransform : ThirdPersonMuzzleTransform);
             _muzzleEffectInstance.SetActive(false);*/
 
-            //_sceneObjects = Runner.GetSingleton<SceneObjects>();
+            _sceneObjects = Runner.GetSingleton<SceneObjects>();
         }
 
         public override void FixedUpdateNetwork()
@@ -251,18 +251,20 @@ namespace FPS_personal_project
             if (Runner.LagCompensation.Raycast(firePosition, fireDirection, MaxHitDistance,
                    player: Object.InputAuthority, out var hit, HitMask, hitOptions))
             {
-                Debug.LogWarning("inside the raycast if");
+               
                 projectileData.HitPosition = hit.Point;
                 projectileData.HitNormal = hit.Normal;
 
                 if (hit.Hitbox != null)
                 {
                     ApplyDamage(hit.Hitbox, hit.Point, fireDirection);
+                   
                 }
                 else
                 {
                      //Hit effect is shown only when player hits solid object.
                     projectileData.ShowHitEffect = true;
+                    
                 }
             }
 

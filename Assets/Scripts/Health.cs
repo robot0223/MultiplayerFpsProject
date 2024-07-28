@@ -30,7 +30,7 @@ namespace FPS_personal_project
         private TickTimer _immortalTimer { get; set; }
 
         private int _visibleHitCount;
-       // private SceneObjects _sceneObjects;
+        private SceneObjects _sceneObjects;
 
         public bool ApplyDamage(PlayerRef instigator, float damage, Vector3 position, Vector3 direction, EWeaponType weaponType, bool isCritical)
         {
@@ -46,7 +46,7 @@ namespace FPS_personal_project
             {
                 CurrentHealth = 0f;
 
-                //_sceneObjects.Gameplay.PlayerKilled(instigator, Object.InputAuthority, weaponType, isCritical);
+                _sceneObjects.Gameplay.PlayerKilled(instigator, Object.InputAuthority, weaponType, isCritical);
             }
 
             // Store relative hit position.
@@ -85,7 +85,7 @@ namespace FPS_personal_project
 
         public override void Spawned()
         {
-            //_sceneObjects = Runner.GetSingleton<SceneObjects>();
+            _sceneObjects = Runner.GetSingleton<SceneObjects>();
 
             if (HasStateAuthority)
             {
