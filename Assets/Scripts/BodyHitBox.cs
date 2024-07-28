@@ -7,7 +7,7 @@ namespace FPS_personal_project
 {
 
 
-    public class BodyHitBox : Hitbox
+    public class BodyHitbox : Hitbox
     {
         public float DamageMultiplier = 1f;
     }

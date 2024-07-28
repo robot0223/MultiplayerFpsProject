@@ -1,6 +1,7 @@
 using Fusion;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.VFX;
 
 namespace FPS_personal_project
 {
@@ -48,7 +49,7 @@ namespace FPS_personal_project
         [FormerlySerializedAs("MuzzleTransform")]
         public Transform FirstPersonMuzzleTransform;
         public Transform ThirdPersonMuzzleTransform;
-        public GameObject MuzzleEffectPrefab;
+        public VisualEffect MuzzleEffect;
         public ProjectileVisual ProjectileVisualPrefab;
 
         [Header("Sounds")]
@@ -77,7 +78,7 @@ namespace FPS_personal_project
         private int _fireTicks;
         private int _visibleFireCount;
         private bool _reloadingVisible;
-        private GameObject _muzzleEffectInstance;
+        private VisualEffect _muzzleEffectInstance;
        // private SceneObjects _sceneObjects;
 
         public void Fire(Vector3 firePosition, Vector3 fireDirection, bool justPressed)
@@ -173,9 +174,9 @@ namespace FPS_personal_project
 
             float fireTime = 60f / FireRate;
             _fireTicks = Mathf.CeilToInt(fireTime / Runner.DeltaTime);
-
-            _muzzleEffectInstance = Instantiate(MuzzleEffectPrefab, HasInputAuthority ? FirstPersonMuzzleTransform : ThirdPersonMuzzleTransform);
-            _muzzleEffectInstance.SetActive(false);
+           
+           /* _muzzleEffectInstance = Instantiate(MuzzleEffectPrefab, HasInputAuthority ? FirstPersonMuzzleTransform : ThirdPersonMuzzleTransform);
+            _muzzleEffectInstance.SetActive(false);*/
 
             //_sceneObjects = Runner.GetSingleton<SceneObjects>();
         }
@@ -228,7 +229,7 @@ namespace FPS_personal_project
 
             if (_reloadingVisible != IsReloading)
             {
-                Animator.SetBool("IsReloading", IsReloading);
+               // Animator.SetBool("IsReloading", IsReloading);
 
                 if (IsReloading)
                 {
@@ -241,25 +242,26 @@ namespace FPS_personal_project
 
         private void FireProjectile(Vector3 firePosition, Vector3 fireDirection)
         {
-            var projectileData = new ProjectileData();
 
+            var projectileData = new ProjectileData();
             var hitOptions = HitOptions.IncludePhysX | HitOptions.IgnoreInputAuthority;
-            Debug.LogWarning("Fireprojectile func");
+
+          
             // Whole projectile path and effects are immediately processed (= hitscan projectile).
             if (Runner.LagCompensation.Raycast(firePosition, fireDirection, MaxHitDistance,
                    player: Object.InputAuthority, out var hit, HitMask, hitOptions))
             {
-               
+                Debug.LogWarning("inside the raycast if");
                 projectileData.HitPosition = hit.Point;
                 projectileData.HitNormal = hit.Normal;
 
                 if (hit.Hitbox != null)
                 {
-                    //ApplyDamage(hit.Hitbox, hit.Point, fireDirection);
+                    ApplyDamage(hit.Hitbox, hit.Point, fireDirection);
                 }
                 else
                 {
-                    // Hit effect is shown only when player hits solid object.
+                     //Hit effect is shown only when player hits solid object.
                     projectileData.ShowHitEffect = true;
                 }
             }
@@ -275,16 +277,15 @@ namespace FPS_personal_project
                 FireSound.PlayOneShot(FireSound.clip);
             }
 
-            // Reset muzzle effect visibility.
-            _muzzleEffectInstance.SetActive(false);
-            _muzzleEffectInstance.SetActive(true);
+            MuzzleEffect.Play();
+            //_muzzleEffectInstance.SetActive(true);
 
-            Animator.SetTrigger("Fire");
+            //Animator.SetTrigger("AnimState_PrimaryFire");
 
             GetComponentInParent<Player>().PlayFireEffect();
         }
 
-        /*private void ApplyDamage(Hitbox enemyHitbox, Vector3 position, Vector3 direction)
+        private void ApplyDamage(Hitbox enemyHitbox, Vector3 position, Vector3 direction)
         {
             var enemyHealth = enemyHitbox.Root.GetComponent<Health>();
             if (enemyHealth == null || enemyHealth.IsAlive == false)
@@ -294,10 +295,10 @@ namespace FPS_personal_project
             bool isCriticalHit = damageMultiplier > 1f;
 
             float damage = Damage * damageMultiplier;
-            if (_sceneObjects.Gameplay.DoubleDamageActive)
+            /*if (_sceneObjects.Gameplay.DoubleDamageActive)
             {
                 damage *= 2f;
-            }
+            }*/
 
             if (enemyHealth.ApplyDamage(Object.InputAuthority, damage, position, direction, Type, isCriticalHit) == false)
                 return;
@@ -305,9 +306,9 @@ namespace FPS_personal_project
             if (HasInputAuthority && Runner.IsForward)
             {
                 // For local player show UI hit effect.
-                _sceneObjects.GameUI.PlayerView.Crosshair.ShowHit(enemyHealth.IsAlive == false, isCriticalHit);
+               // _sceneObjects.GameUI.PlayerView.Crosshair.ShowHit(enemyHealth.IsAlive == false, isCriticalHit);
             }
-        }*/
+        }
 
         private void PlayEmptyClipSound(bool fireJustPressed)
         {

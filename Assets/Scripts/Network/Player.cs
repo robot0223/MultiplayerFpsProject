@@ -4,6 +4,7 @@ using Fusion.Addons.SimpleKCC;
 using Cinemachine;
 using static UnityEngine.EventSystems.PointerEventData;
 using UnityEditor.Rendering;
+using System.Collections.Generic;
 
 namespace FPS_personal_project
 {
@@ -16,7 +17,7 @@ namespace FPS_personal_project
         [Header("Components")]
         public SimpleKCC KCC;
        public Weapons Weapons;
-        /* public Health Health;*/
+        public Health Health;
         public Animator Animator;
         public HitboxRoot HitboxRoot;
 
@@ -96,9 +97,11 @@ namespace FPS_personal_project
 
             //_sceneObjects = Runner.GetSingleton<SceneObjects>();
         }
-
+       
         public override void FixedUpdateNetwork()
         {
+            Debug.LogWarning(Health.IsAlive);
+           
 
            /* if (_sceneObjects.Gameplay.State == EGameplayState.Finished)
             {
