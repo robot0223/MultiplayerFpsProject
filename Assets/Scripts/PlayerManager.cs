@@ -17,6 +17,7 @@ namespace FPS_personal_project
 
         public static void UpdatePlayerConnections(NetworkRunner runner, Action<PlayerRef> spawnPlayer, Action<PlayerRef, Player> despawnPlayer)
         {
+            Debug.LogWarning("updating player connections");
             _tempSpawnPlayers.Clear();
             _tempSpawnedPlayers.Clear();
 
@@ -37,11 +38,12 @@ namespace FPS_personal_project
                 // 4. If a player is not valid (disconnected) execute the despawn callback.
                 if (runner.IsPlayerValid(playerRef) == false)
                 {
+                    Debug.LogWarning("player is vaild");
                     try
                     {
                         despawnPlayer(playerRef, player);
                     }
-                    catch (Exception exception)
+                    catch (Exception exception)//TODO: after logging exception, change scene/try again etc.
                     {
                         Debug.LogException(exception);
                     }

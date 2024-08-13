@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4647082404031594}
   - component: {fileID: 65723914154125636}
+  - component: {fileID: 6101274568129427837}
+  - component: {fileID: 7898748681056983346}
   m_Layer: 0
   m_Name: DamageBox
   m_TagString: Untagged
@@ -53,3 +55,38 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4, y: 4, z: 2.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6101274568129427837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844665601742446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a421d435dc0184f8204b486d089b83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageArea: {fileID: 65723914154125636}
+  enterDamage: 0
+  continuousDamage: 0
+  damageDuration: 0
+  instantKill: 0
+--- !u!114 &7898748681056983346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844665601742446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3002485499
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 6101274568129427837}

@@ -59,8 +59,8 @@ namespace FPS_personal_project
 
         public bool HasAmmo => ClipAmmo > 0 || RemainingAmmo > 0;
 
-        [Networked]
-        public NetworkBool IsCollected { get; set; }
+        /*[Networked]
+        public NetworkBool IsCollected { get; set; }*/
         [Networked]
         public NetworkBool IsReloading { get; set; }
         [Networked]
@@ -84,8 +84,8 @@ namespace FPS_personal_project
         public void Fire(Vector3 firePosition, Vector3 fireDirection, bool justPressed)
         {
            
-            if (IsCollected == false)
-                return;
+            /*if (IsCollected == false)
+                return;*/
             if (justPressed == false && IsAutomatic == false)
                 return;
             if (IsReloading)
@@ -123,8 +123,8 @@ namespace FPS_personal_project
 
         public void Reload()
         {
-            if (IsCollected == false)
-                return;
+           /* if (IsCollected == false)
+                return;*/
             if (ClipAmmo >= MaxClipAmmo)
                 return;
             if (RemainingAmmo <= 0)
@@ -183,8 +183,8 @@ namespace FPS_personal_project
 
         public override void FixedUpdateNetwork()
         {
-            if (IsCollected == false)
-                return;
+           /* if (IsCollected == false)
+                return;*/
 
             if (ClipAmmo == 0)
             {
@@ -229,7 +229,7 @@ namespace FPS_personal_project
 
             if (_reloadingVisible != IsReloading)
             {
-               // Animator.SetBool("IsReloading", IsReloading);
+                Animator.SetBool("IsReloading", IsReloading);
 
                 if (IsReloading)
                 {

@@ -16,6 +16,7 @@ namespace FPS_personal_project
         public PlayerRef PlayerRef;
         public int Kills;
         public int Deaths;
+        public int Suicides;
         public int LastKillTick;
         public int StatisticPosition;
         public bool IsAlive;
@@ -58,11 +59,11 @@ namespace FPS_personal_project
         private List<PlayerData> _tempPlayerData = new(16);
         private List<Transform> _recentSpawnPoints = new(20);
 
-       /* public void Awake()
+        public void Awake()
         {
             SpawnPointNum = AutoSpawnPointNum ? GameObject.FindGameObjectsWithTag("SpawnPoint").Length : SpawnPointNum;
             _recentSpawnPoints = new(SpawnPointNum);
-        }*/
+        }
         public void PlayerKilled(PlayerRef killerPlayerRef, PlayerRef victimePlayerRef, EWeaponType weaponType, bool isCriticalKill)
         {
             if (HasStateAuthority == false)
@@ -71,9 +72,17 @@ namespace FPS_personal_project
             //update statstics of the killer player
             if (AllPlayerData.TryGet(killerPlayerRef, out PlayerData killerData))
             {
-                killerData.Kills++;
-                killerData.LastKillTick = Runner.Tick;
+                if(killerPlayerRef != victimePlayerRef)
+                {
+                    killerData.Kills++;
+                    killerData.LastKillTick = Runner.Tick;
+                }
+                else
+                {
+                    killerData.Suicides++;
+                }
                 AllPlayerData.Set(killerPlayerRef, killerData);
+
             }
 
             //update statistics of the victimp player
@@ -94,14 +103,15 @@ namespace FPS_personal_project
 
         public override void Spawned()
         {
-            if(Runner.Mode == SimulationModes.Server)
+            
+            if(Runner.Mode == SimulationModes.Server||Runner.Mode == SimulationModes.Host)
             {
                 Application.targetFrameRate = TickRate.Resolve(Runner.Config.Simulation.TickRateSelection).Server;
             }
 
             if(Runner.GameMode == GameMode.Shared)
             {
-                throw new System.NotSupportedException("Yay I've done smth wrong. my project doesn't use shared mode you(me?) idiot.");
+                throw new System.NotSupportedException("doesn't support shared.");
             }
 
         }
@@ -110,7 +120,7 @@ namespace FPS_personal_project
         {
             if (HasStateAuthority == false)//game logic is server auth.
                 return;
-            Debug.LogWarning("gameplay updatenetwork");
+           
             // PlayerManager is a special helper class which iterates over list of active players (NetworkRunner.ActivePlayers) and call spawn/despawn callbacks on demand.
             PlayerManager.UpdatePlayerConnections(Runner, SpawnPlayer, DespawnPlayer);
 
@@ -150,7 +160,10 @@ namespace FPS_personal_project
             //every client must send its nickname to server when the game is started
             if(_isNicknameSent == false)
             {
-                RPC_SetPlayerNickname(Runner.LocalPlayer, PlayerPrefs.GetString("Menu.UserName"));
+                if(PlayerPrefs.GetString("Menu.UserName") != null)
+                    RPC_SetPlayerNickname(Runner.LocalPlayer, PlayerPrefs.GetString("Menu.UserName"));//TODO:store data in menu.
+                else
+                    RPC_SetPlayerNickname( Runner.LocalPlayer, "Player" +  Runner.LocalPlayer.PlayerId.ToString());
                 _isNicknameSent = true;
             }
 

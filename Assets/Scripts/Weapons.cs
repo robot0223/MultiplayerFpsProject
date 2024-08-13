@@ -20,7 +20,7 @@ namespace FPS_personal_project
         public Weapon CurrentWeapon { get; set; }
        
 
-       
+
         [Networked]
         private Weapon _pendingWeapon { get; set; }
 
@@ -40,23 +40,17 @@ namespace FPS_personal_project
 
       
 
-       /* public Weapon GetWeapon(EWeaponType weaponType)
+       public Weapon GetWeapon(EWeaponType weaponType)
         {
-            for (int i = 0; i < AllWeapons.Length; ++i)
-            {
-                if (AllWeapons[i].Type == weaponType)
-                    return AllWeapons[i];
-            }
-
-            return default;
-        }*/
+            return CurrentWeapon;
+        }
 
         public override void Spawned()
         {
             if (HasStateAuthority)
             {
                // CurrentWeapon = AllWeapons[0];
-                CurrentWeapon.IsCollected = true;
+                //CurrentWeapon.IsCollected = true;
             }
         }
 
@@ -94,8 +88,7 @@ namespace FPS_personal_project
 
         private void Awake()
         {
-            // All weapons are already present inside Player prefab.
-            // This is the simplest solution when only few weapons are available in the game.
+            
            // AllWeapons = GetComponentsInChildren<Weapon>();
         }
 

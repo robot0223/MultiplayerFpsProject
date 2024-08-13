@@ -1,6 +1,7 @@
 using UnityEngine;
 using Fusion;
-using Fusion.Addons.SimpleKCC;
+//using Fusion.Addons.SimpleKCC;
+using Fusion.Addons.KCC;
 using Cinemachine;
 using static UnityEngine.EventSystems.PointerEventData;
 using UnityEditor.Rendering;
@@ -15,10 +16,11 @@ namespace FPS_personal_project
     public class Player : NetworkBehaviour
     {
         [Header("Components")]
-        public SimpleKCC KCC;
+        public KCC KCC;
         public Weapons Weapons;
         public Health Health;
-        public Animator Animator;
+        public Animator ThirdPersonAnimator;
+        public Animator ThirdPersonWeaponAnimator;
         public HitboxRoot HitboxRoot;
 
         [Header("Setup")]
@@ -27,6 +29,7 @@ namespace FPS_personal_project
         public AudioSource JumpSound;
         public AudioClip[] JumpClips;
         public Transform CameraHandle;
+        public float MaxCameraPitch = 89f;
         public GameObject FirstPersonRoot;
         public GameObject ThirdPersonRoot;
         public NetworkObject SprayPrefab;
@@ -48,7 +51,11 @@ namespace FPS_personal_project
 
         private int _visibleJumpCount;
 
-        private bool doubleJump;
+        private bool _isMoving = false;
+        private bool _doubleJump;
+
+        private EnvironmentProcessor _environmentProcessor;
+
 
         private SceneObjects _sceneObjects;
 
@@ -59,7 +66,8 @@ namespace FPS_personal_project
             if (Mathf.Abs(GetAnimationMoveVelocity().x) > 0.2f)
                 return;*/
 
-            Animator.SetTrigger("Fire");
+            ThirdPersonAnimator.SetTrigger("TriggerAction_PrimaryFire");
+            //ThirdPersonWeaponAnimator.SetTrigger("TriggerAction_PrimaryFire");
         }
 
         public override void Spawned()
@@ -79,30 +87,16 @@ namespace FPS_personal_project
                 }
             }
 
-            if(HasInputAuthority)
-            {
-                Camera[] Cameras = Camera.allCameras;
-                foreach (Camera cam in Cameras)
-                {
-                    if (cam.gameObject.tag == "PlayerCamera")
-                    {
-                        cam.enabled = true;
-                        continue;
-                    }
 
-                    cam.enabled = false;
-                }
-
-            }
-
+           _environmentProcessor = KCC.GetProcessor<EnvironmentProcessor>();
             _sceneObjects = Runner.GetSingleton<SceneObjects>();
         }
        
         public override void FixedUpdateNetwork()
         {
-            
-           
 
+
+            
             if (_sceneObjects.Gameplay.State == EGamePlayState.Finished)
             {
                 // After gameplay is finished we still want the player to finish movement and not stuck in the air.
@@ -144,42 +138,55 @@ namespace FPS_personal_project
 
         public override void Render()
         {
-            /*if (_sceneObjects.Gameplay.State == EGameplayState.Finished)
+            if (_sceneObjects.Gameplay.State == EGamePlayState.Finished)
                 return;
 
             var moveVelocity = GetAnimationMoveVelocity();
 
             // Set animation parameters.
-            Animator.SetFloat("LocomotionTime", Time.time * 2f);
-            Animator.SetBool("IsAlive", Health.IsAlive);
-            Animator.SetBool("IsGrounded", KCC.IsGrounded);
-            Animator.SetBool("IsReloading", Weapons.CurrentWeapon.IsReloading);
-            Animator.SetFloat("MoveX", moveVelocity.x, 0.05f, Time.deltaTime);
-            Animator.SetFloat("MoveZ", moveVelocity.z, 0.05f, Time.deltaTime);
-            Animator.SetFloat("MoveSpeed", moveVelocity.magnitude);
-            Animator.SetFloat("Look", -KCC.GetLookRotation(true, false).x / 90f);
+            ThirdPersonAnimator.SetFloat("LocomotionTime", Time.time * 2f);
+            ThirdPersonAnimator.SetBool("IsAlive", Health.IsAlive);
+            ThirdPersonAnimator.SetBool("IsGrounded", KCC.FixedData.IsGrounded);
+            ThirdPersonAnimator.SetBool("AnimState_InAir",!KCC.FixedData.IsGrounded);
+            ThirdPersonAnimator.SetBool("AnimState_Run", _isMoving);
+            ThirdPersonAnimator.SetBool("AnimState_Stand", !_isMoving);
+            if(Weapons.CurrentWeapon.IsReloading)
+            {
+                ThirdPersonAnimator.SetTrigger("TriggerAction_Reloading");
+                ThirdPersonWeaponAnimator.SetTrigger("TriggerAction_Reloading");
+            }
+                
+            ThirdPersonAnimator.SetFloat("MoveX", moveVelocity.x, 0.05f, Time.deltaTime);
+            ThirdPersonAnimator.SetFloat("MoveZ", moveVelocity.z, 0.05f, Time.deltaTime);
+            ThirdPersonAnimator.SetFloat("MoveSpeed", moveVelocity.magnitude);
+            ThirdPersonAnimator.SetFloat("Look", -KCC.GetLookRotation(true, false).x / 90f);
 
             if (Health.IsAlive == false)
             {
                 // Disable UpperBody (override) and Look (additive) layers. Death animation is full-body.
 
-                int upperBodyLayerIndex = Animator.GetLayerIndex("UpperBody");
-                Animator.SetLayerWeight(upperBodyLayerIndex, Mathf.Max(0f, Animator.GetLayerWeight(upperBodyLayerIndex) - Time.deltaTime));
+                int upperBodyLayerIndex = ThirdPersonAnimator.GetLayerIndex("Locomotion");
+                ThirdPersonAnimator.SetLayerWeight(upperBodyLayerIndex, Mathf.Max(0f, ThirdPersonAnimator.GetLayerWeight(upperBodyLayerIndex) - Time.deltaTime));
 
-                int lookLayerIndex = Animator.GetLayerIndex("Look");
-                Animator.SetLayerWeight(lookLayerIndex, Mathf.Max(0f, Animator.GetLayerWeight(lookLayerIndex) - Time.deltaTime));
+                int lookLayerIndex = ThirdPersonAnimator.GetLayerIndex("Look");
+                ThirdPersonAnimator.SetLayerWeight(lookLayerIndex, Mathf.Max(0f, ThirdPersonAnimator.GetLayerWeight(lookLayerIndex) - Time.deltaTime));
             }
 
             if (_visibleJumpCount < _jumpCount)
             {
-                Animator.SetTrigger("Jump");
-
+                //ThirdPersonAnimator.SetTrigger("Jump");
+                ThirdPersonAnimator.SetBool("AnimState_Jump", true);
                 JumpSound.clip = JumpClips[Random.Range(0, JumpClips.Length)];
                 JumpSound.Play();
             }
 
+            else if(_visibleJumpCount == _jumpCount)
+            {
+                ThirdPersonAnimator.SetBool("AnimState_Jump", false);
+            }
+
             _visibleJumpCount = _jumpCount;
-*/
+
 
 
 
@@ -193,34 +200,44 @@ namespace FPS_personal_project
         {
             if (HasInputAuthority == false)
                 return;
-
+            
             RefreshCamera();
+        }
+
+        private void SetMovementData()
+        {
+            _environmentProcessor.KinematicSpeed = MoveSpeed;
+            _environmentProcessor.KinematicAirAcceleration = AirAcceleration;
+            _environmentProcessor.KinematicAirFriction = AirDeceleration;
+            _environmentProcessor.KinematicGroundAcceleration = GroundAcceleration;
+            _environmentProcessor.KinematicGroundFriction = GroundDeceleration;
+            _environmentProcessor.Gravity = KCC.FixedData.RealVelocity.y >= 0f ? -(new Vector3(0,UpGravity,0)) : -(new Vector3(0,DownGravity,0));
         }
 
         private void ProcessInput(NetworkedInput input)
         {
             // Processing input - look rotation, jump, movement, weapon fire, weapon switching, weapon reloading, spray decal.
-
-            KCC.AddLookRotation(input.LookRotationDelta, -89f, 89f);
-
+            SetMovementData();
+            KCC.AddLookRotation(input.LookRotationDelta, -MaxCameraPitch, MaxCameraPitch);
+            
             // It feels better when player falls quicker
-            KCC.SetGravity(KCC.RealVelocity.y >= 0f ? -UpGravity : -DownGravity);
+          //  KCC.SetGravity(KCC.Data.RealVelocity.y >= 0f ? -UpGravity : -DownGravity);
 
-            var inputDirection = KCC.TransformRotation * new Vector3(input.MoveDirection.x, 0f, input.MoveDirection.y);
-            var jumpImpulse = 0f;
+            var inputDirection = KCC.FixedData.TransformRotation * new Vector3(input.MoveDirection.x, 0f, input.MoveDirection.y);
+            var jumpImpulse = Vector3.zero;
            
             if (input.Buttons.WasPressed(_previousButtons, EInputButton.Jump))
             {
-                if (KCC.IsGrounded)
+                if (KCC.FixedData.IsGrounded)
                 {
-                    jumpImpulse = JumpForce;
-                    doubleJump = true;
+                    jumpImpulse.y = JumpForce;
+                    _doubleJump = true;
                 }
                     
-                else if (!KCC.IsGrounded && doubleJump)
+                else if (!KCC.FixedData.IsGrounded && _doubleJump)
                 {
-                    jumpImpulse = JumpForce;
-                    doubleJump = false;
+                    jumpImpulse.y = JumpForce;
+                    _doubleJump = false;
                 }
 
                    
@@ -230,10 +247,10 @@ namespace FPS_personal_project
             
             
 
-            MovePlayer(inputDirection * MoveSpeed, jumpImpulse);
+            MovePlayer(inputDirection, jumpImpulse);
             RefreshCamera();
 
-            if (KCC.HasJumped)
+            if (KCC.FixedData.HasJumped)
             {
                 _jumpCount++;
             }
@@ -253,23 +270,28 @@ namespace FPS_personal_project
             _previousButtons = input.Buttons;
         }
 
-        private void MovePlayer(Vector3 desiredMoveVelocity = default, float jumpImpulse = default)
+        private void MovePlayer(Vector3 desiredMoveVelocity = default, Vector3 jumpImpulse = default)
         {
-            float acceleration = 1f;
-            if(KCC.IsGrounded)
-                doubleJump = true;
+            
+            
+            if(KCC.FixedData.IsGrounded)
+                _doubleJump = true;
             if (desiredMoveVelocity == Vector3.zero)
             {
                 // No desired move velocity - we are stopping.
-                acceleration = KCC.IsGrounded == true ? GroundDeceleration : AirDeceleration;
+                
+                _isMoving = false;
             }
             else
             {
-                acceleration = KCC.IsGrounded == true ? GroundAcceleration : AirAcceleration;
+                
+                _isMoving = true;
             }
             
-            _moveVelocity = Vector3.Lerp(_moveVelocity, desiredMoveVelocity, acceleration * Runner.DeltaTime);
-            KCC.Move(_moveVelocity, jumpImpulse);
+            //_moveVelocity = Vector3.Lerp(_moveVelocity, desiredMoveVelocity, Runner.DeltaTime);
+            _moveVelocity = desiredMoveVelocity;
+            KCC.SetInputDirection(_moveVelocity);
+            KCC.Jump(jumpImpulse);
         }
 
         private void RefreshCamera()
@@ -287,10 +309,10 @@ namespace FPS_personal_project
 
         private Vector3 GetAnimationMoveVelocity()
         {
-            if (KCC.RealSpeed < 0.01f)
+            if (KCC.FixedData.RealSpeed < 0.01f)
                 return default;
 
-            var velocity = KCC.RealVelocity;
+            var velocity = KCC.FixedData.RealVelocity;
 
             // We only care about X an Z directions.
             velocity.y = 0f;

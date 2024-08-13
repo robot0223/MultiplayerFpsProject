@@ -25,7 +25,25 @@ namespace FPS_personal_project
             }
         }
 
-            private GamePlay _gameplay;
+        public GameUI GameUI
+        {
+            get
+            {
+                if (_gameUI == null && Runner != null && Runner.SceneManager != null && Runner.SceneManager.MainRunnerScene.IsValid())
+                {
+                    var gameUIs = Runner.SceneManager.MainRunnerScene.GetComponents<GameUI>(true);
+                    if (gameUIs.Length > 0)
+                    {
+                        _gameUI = gameUIs[0];
+                    }
+                }
+
+                return _gameUI;
+            }
+        }
+
+        private GamePlay _gameplay;
+        private GameUI _gameUI;
     }
 }
 
