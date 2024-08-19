@@ -1,4 +1,5 @@
 using Fusion;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
@@ -25,7 +26,7 @@ namespace FPS_personal_project
         [Header("Fire Setup")]
         public bool IsAutomatic = true;
         public float Damage = 10f;
-        public int FireRate = 100;
+        public float FireRate = 100;
         [Range(1, 20)]
         public int ProjectilesPerShot = 1;
         public float Dispersion = 0f;
@@ -34,13 +35,14 @@ namespace FPS_personal_project
 
         [Header("Ammo")]
         public int MaxClipAmmo = 12;
-        public int StartAmmo = 25;
+        //public int StartAmmo = 25;
         public float ReloadTime = 2f;
 
         [Header("Visuals")]
         public Sprite Icon;
         public string Name;
         public Animator Animator;
+        public Animator WeaponAnimator;
         [FormerlySerializedAs("WeaponVisual")]
         //public GameObject FirstPersonVisual;
        // public GameObject ThirdPersonVisual;
@@ -51,13 +53,15 @@ namespace FPS_personal_project
         public Transform ThirdPersonMuzzleTransform;
         public VisualEffect MuzzleEffect;
         public ProjectileVisual ProjectileVisualPrefab;
+        public HitscanEffectTypeDefinition HitscanEffect;
+        public SpatialEffectTypeDefinition ImpactEffect;
 
         [Header("Sounds")]
         public AudioSource FireSound;
         public AudioSource ReloadingSound;
         public AudioSource EmptyClipSound;
 
-        public bool HasAmmo => ClipAmmo > 0 || RemainingAmmo > 0;
+        //public bool HasAmmo => ClipAmmo > 0 || RemainingAmmo > 0;
 
         /*[Networked]
         public NetworkBool IsCollected { get; set; }*/
@@ -65,8 +69,8 @@ namespace FPS_personal_project
         public NetworkBool IsReloading { get; set; }
         [Networked]
         public int ClipAmmo { get; set; }
-        [Networked]
-        public int RemainingAmmo { get; set; }
+        /*[Networked]
+        public int RemainingAmmo { get; set; }*/
 
         [Networked]
         private int _fireCount { get; set; }
@@ -127,8 +131,8 @@ namespace FPS_personal_project
                 return;*/
             if (ClipAmmo >= MaxClipAmmo)
                 return;
-            if (RemainingAmmo <= 0)
-                return;
+           /* if (RemainingAmmo <= 0)
+                return;*/
             if (IsReloading)
                 return;
             if (_fireCooldown.ExpiredOrNotRunning(Runner) == false)
@@ -138,10 +142,10 @@ namespace FPS_personal_project
             _fireCooldown = TickTimer.CreateFromSeconds(Runner, ReloadTime);
         }
 
-        public void AddAmmo(int amount)
+        /*public void AddAmmo(int amount)
         {
             RemainingAmmo += amount;
-        }
+        }*/
 
        /* public void ToggleVisibility(bool isVisible)
         {
@@ -166,8 +170,10 @@ namespace FPS_personal_project
         {
             if (HasStateAuthority)
             {
-                ClipAmmo = Mathf.Clamp(StartAmmo, 0, MaxClipAmmo);
-                RemainingAmmo = StartAmmo - ClipAmmo;
+                //ClipAmmo = Mathf.Clamp(StartAmmo, 0, MaxClipAmmo);
+                //RemainingAmmo = StartAmmo - ClipAmmo;
+                ClipAmmo = MaxClipAmmo;
+               
             }
 
             _visibleFireCount = _fireCount;
@@ -198,10 +204,10 @@ namespace FPS_personal_project
                 IsReloading = false;
 
                 int reloadAmmo = MaxClipAmmo - ClipAmmo;
-                reloadAmmo = Mathf.Min(reloadAmmo, RemainingAmmo);
+               // reloadAmmo = Mathf.Min(reloadAmmo, RemainingAmmo);
 
                 ClipAmmo += reloadAmmo;
-                RemainingAmmo -= reloadAmmo;
+               // RemainingAmmo -= reloadAmmo;
 
                 // Add small prepare time after reload.
                 _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);
@@ -221,19 +227,23 @@ namespace FPS_personal_project
                 var data = _projectileData[i % _projectileData.Length];
                 var muzzleTransform = HasInputAuthority ? FirstPersonMuzzleTransform : ThirdPersonMuzzleTransform;
 
-                var projectileVisual = Instantiate(ProjectileVisualPrefab, muzzleTransform.position, muzzleTransform.rotation);
-                projectileVisual.SetHit(data.HitPosition, data.HitNormal, data.ShowHitEffect);
+                //var projectileVisual = Instantiate(ProjectileVisualPrefab, muzzleTransform.position, muzzleTransform.rotation);
+                //projectileVisual.SetHit(data.HitPosition, data.HitNormal, data.ShowHitEffect
+                Debug.LogWarning(Runner.GetSingleton<SceneObjects>().EffectModuleClient == null);
+                _sceneObjects.EffectModuleClient.vfxManagerInScene.GetComponent<HitscanEffectSystems>().Request(HitscanEffect, muzzleTransform.position, data.HitPosition);
+                _sceneObjects.EffectModuleClient.vfxManagerInScene.GetComponent<SpatialEffectSystems>().Request(ImpactEffect,data.HitPosition, muzzleTransform.transform.rotation);
             }
 
             _visibleFireCount = _fireCount;
 
             if (_reloadingVisible != IsReloading)
             {
-                Animator.SetBool("IsReloading", IsReloading);
+                
 
                 if (IsReloading)
                 {
                     ReloadingSound.Play();
+                    SetAnimationTrigger("TriggerAction_Reloading");
                 }
 
                 _reloadingVisible = IsReloading;
@@ -282,7 +292,7 @@ namespace FPS_personal_project
             MuzzleEffect.Play();
             //_muzzleEffectInstance.SetActive(true);
 
-            //Animator.SetTrigger("AnimState_PrimaryFire");
+            SetAnimationTrigger("TriggerAction_PrimaryFire");
 
             GetComponentInParent<Player>().PlayFireEffect();
         }
@@ -327,6 +337,12 @@ namespace FPS_personal_project
             {
                 EmptyClipSound.Play();
             }
+        }
+
+        private void SetAnimationTrigger(string trigger)
+        {
+            Animator.SetTrigger(trigger);
+            WeaponAnimator.SetTrigger(trigger);
         }
 
         /// <summary>

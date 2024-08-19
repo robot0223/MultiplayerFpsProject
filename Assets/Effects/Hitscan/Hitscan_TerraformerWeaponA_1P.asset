@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68296c825c96e4841b59c24abb3025af, type: 3}
+  m_Script: {fileID: 11500000, guid: 71b258cd8cc2417408c3e827ccaafa93, type: 3}
   m_Name: Hitscan_TerraformerWeaponA_1P
   m_EditorClassIdentifier: 
   effect: {fileID: 8926484042661614526, guid: 5699d64ee78501b449feefe0591fb50f, type: 3}

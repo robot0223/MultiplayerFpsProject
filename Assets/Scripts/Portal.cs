@@ -61,7 +61,8 @@ namespace FPS_personal_project
 
         public override bool CanStartInteraction(KCC kcc, KCCData data)
         {
-            if (_target == null)
+            
+           if (_target == null)
                 return false;
 
             // We defer interaction start until the KCC crosses center of the object + minor tolerance.

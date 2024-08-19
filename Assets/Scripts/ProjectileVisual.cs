@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 namespace FPS_personal_project
 {
@@ -89,7 +90,8 @@ namespace FPS_personal_project
 
             if (HitEffectPrefab != null)
             {
-                Instantiate(HitEffectPrefab, _targetPosition, Quaternion.LookRotation(_hitNormal), transform);
+                HitEffectPrefab.GetComponent<VisualEffect>().Play();
+                //Instantiate(HitEffectPrefab, _targetPosition, Quaternion.LookRotation(_hitNormal), transform);
             }
 
             Destroy(gameObject, LifeTimeAfterHit);

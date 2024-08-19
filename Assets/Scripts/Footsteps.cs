@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Footsteps : MonoBehaviour
+public class Footsteps : NetworkBehaviour
 {
     public KCC KCC;
     public AudioClip[] FootstepClips;
@@ -20,35 +20,11 @@ public class Footsteps : MonoBehaviour
     private float _footstepCooldown;
     private bool _wasGrounded;
 
-    void OnCharEvent(AnimationEvent e) 
-    {
-        switch (e.stringParameter)
-        {
-            case "FootDown":
-                onFootDown = true;
-                PlayClipSound(FootstepClips);
-                break;
-            case "LeftFootDown":
-                onFootDown = true;
-                PlayClipSound(FootstepClips);
-                break;
-            case "RightFootDown":
-                onFootDown = true;
-                PlayClipSound(FootstepClips);
-                break;
-            case "Land":
-                onLand = true;
-                PlayClipSound(LandClips);
-                break;
-            default:
-                onFootDown = false;
-                onLand = false;
-                break;
+    
 
-        }
-    }
+  
 
-   /* public override void Spawned()
+     public override void Spawned()
     {
         _wasGrounded = true;
         if(HasInputAuthority)
@@ -59,20 +35,17 @@ public class Footsteps : MonoBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if(KCC.FixedData.IsGrounded!=_wasGrounded)
+        
+
+        
+        if (!KCC.FixedData.IsGrounded)
+            return;
+
+        if (KCC.FixedData.IsGrounded != _wasGrounded)
         {
             PlayClipSound(LandClips);
             _wasGrounded = KCC.FixedData.IsGrounded;
         }
-
-        if(onFootDown)
-            PlayClipSound(FootstepClips);
-
-        if (onLand)
-            PlayClipSound(LandClips);
-        //trusting animation event more than kcc. most reasonable(sarcasm!)
-        if (!KCC.FixedData.IsGrounded)
-            return;
 
         _footstepCooldown -= Time.deltaTime;
 
@@ -80,7 +53,7 @@ public class Footsteps : MonoBehaviour
         {
             PlayClipSound(FootstepClips);
         }
-    }*/
+    }
 
     private void PlayClipSound(AudioClip[] audios)
     {

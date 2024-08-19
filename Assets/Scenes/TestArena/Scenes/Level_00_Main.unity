@@ -8099,9 +8099,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 370018645}
+  - component: {fileID: 370018647}
   - component: {fileID: 370018644}
+  - component: {fileID: 370018646}
   m_Layer: 0
-  m_Name: NetworkRunnerHandler
+  m_Name: SceneStartHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8136,6 +8138,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &370018646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370018643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcd88b6f1c1f04245afbcb2e020e27da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vfxManager: {fileID: 6399594913867657033, guid: 190c30213555f374b9768e3a3bb378ad,
+    type: 3}
+  vfxManagerInScene: {fileID: 0}
+--- !u!114 &370018647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370018643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5935ed1bceee084ea48bcf75f1a3093, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &370099113
 PrefabInstance:
   m_ObjectHideFlags: 0

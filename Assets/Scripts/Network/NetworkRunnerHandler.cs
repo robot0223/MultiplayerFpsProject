@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
-using UnityEditor.Build.Content;
 using Fusion.Sockets;
 using System;
 using UnityEngine.Diagnostics;
@@ -11,8 +10,8 @@ using System.Linq;
 using Unity.VisualScripting;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
-using static Cinemachine.CinemachineTriggerAction.ActionSettings;
 using UnityEngine.PlayerLoop;
+using Fusion.Photon.Realtime;
 
 public class NetworkRunnerHandler : MonoBehaviour
 {
@@ -38,12 +37,14 @@ public class NetworkRunnerHandler : MonoBehaviour
 
             GameMode gameMode = GameMode.Client;
 
+
 #if UNITY_EDITOR
-            gameMode = GameMode.AutoHostOrClient;
+            // gameMode = GameMode.AutoHostOrClient;
+            //gameMode = GameMode.Server;
+#elif DEVELOPMENT_BUILD
+            //gameMode = GameMode.AutoHostOrClient;
 #elif UNITY_SERVER
             gameMode = GameMode.Server;
-#else
-         //nothing for now.
 #endif
             StartCoroutine(StartNetwork(gameMode));
 
@@ -98,7 +99,22 @@ public class NetworkRunnerHandler : MonoBehaviour
         //doesn't hurt for server to have input listners so not gonna do #if !unity server for now.
         runner.ProvideInput = true;
 
-        Debug.Log($"InitializeNetworkRunner done");
+        FusionAppSettings appSettings = PhotonAppSettings.Global.AppSettings;
+
+        string fixedRegion = GetRegionFromStartupArgs();
+        if (fixedRegion != "")
+            appSettings.FixedRegion = fixedRegion;
+
+        int port = GetServerPortFromStartupArgs();
+        if(port!=0)
+        {
+            appSettings.Port = port;
+        }
+        
+            
+        
+
+        Debug.LogWarning($"InitializeNetworkRunner with port {port} and region {fixedRegion} done");
 
         return runner.StartGame(new StartGameArgs
         {
@@ -110,8 +126,9 @@ public class NetworkRunnerHandler : MonoBehaviour
             SceneManager = sceneManager,
             Updater = updater,
             ObjectProvider = objectProvider,
+            CustomPhotonAppSettings = appSettings
 
-        });
+        }) ;
     }
 
     INetworkSceneManager GetSceneManager(NetworkRunner runner)
@@ -140,10 +157,12 @@ public class NetworkRunnerHandler : MonoBehaviour
             Debug.LogWarning($"{nameof(NetworkRunnerHandler)} can't be a child game object, un-parenting.");
             gameObject.transform.parent = null;
         }
-        
+
 #if UNITY_EDITOR
-     var task = InitializeNetworkRunner(networkRunner, mode, NetAddress.Any(), 
-            SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex), (runner) => { });
+        // var task = InitializeNetworkRunner(networkRunner, mode, NetAddress.Any(), 
+        //      SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex), (runner) => { });
+        var task = InitializeNetworkRunner(networkRunner, mode, NetAddress.Any(),
+              SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex), null);
 #elif UNITY_SERVER
     var task = InitializeNetworkRunner(networkRunner, mode, NetAddress.Any(), 
             SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex), (runner) => { });
@@ -163,6 +182,52 @@ var task = InitializeNetworkRunner(networkRunner, mode, NetAddress.Any(),
             ShutdownAll();
             yield break;
         }
+    }
+
+    public string GetRegionFromStartupArgs()
+    {
+        if (System.Environment.CommandLine.Contains("-region eu"))
+            return "eu";
+
+        else if (System.Environment.CommandLine.Contains("-region kr"))
+            return "kr";
+
+        else if (System.Environment.CommandLine.Contains("-region cn"))
+            return "cn";
+
+        else if (System.Environment.CommandLine.Contains("-region jp"))
+            return "jp";
+
+        else if (System.Environment.CommandLine.Contains("-region asia"))
+            return "asia";
+
+        else if (System.Environment.CommandLine.Contains("-region sa"))
+            return "sa";
+
+        else if (System.Environment.CommandLine.Contains("-region us"))
+            return "us";
+
+        else if (System.Environment.CommandLine.Contains("-region usw"))
+            return "usw";
+
+        Debug.Log("no region provided defaulting to asia");
+        return "asia";
+    }
+
+    public  int GetServerPortFromStartupArgs()
+    {
+        int port = 0;
+        string[] commandLineArgs = System.Environment.GetCommandLineArgs();
+        for(int i = 0; i < commandLineArgs.Length; i++)
+        {
+            if (commandLineArgs[i].Contains("-port"))
+            {
+                int.TryParse(commandLineArgs[i+1], out port);
+                Debug.LogWarning($"found port{commandLineArgs[i]}and port should be {commandLineArgs[i + 1]}");
+                return port;
+            }
+        }
+        return port;
     }
 
 

@@ -799,31 +799,32 @@ MonoBehaviour:
   Type: 1
   IsAutomatic: 1
   Damage: 10
-  FireRate: 100
+  FireRate: 1000
   ProjectilesPerShot: 1
   Dispersion: 0
   HitMask:
     serializedVersion: 2
     m_Bits: 9
   MaxHitDistance: 100
-  MaxClipAmmo: 12
-  StartAmmo: 25
+  MaxClipAmmo: 25
   ReloadTime: 1
   Icon: {fileID: 21300000, guid: a5653c58086f51342b3eccfafca4e7ba, type: 3}
   Name: TerraGooGun
   Animator: {fileID: 1034119322907186271}
+  WeaponAnimator: {fileID: 8418441767980720943}
   FirstPersonMuzzleTransform: {fileID: 5873417856982537926}
   ThirdPersonMuzzleTransform: {fileID: 943339390097253032}
   MuzzleEffect: {fileID: 4767312563511576930}
   ProjectileVisualPrefab: {fileID: 4216153532927076454, guid: 2036cfccded103648abad898009abf9c,
     type: 3}
+  HitscanEffect: {fileID: 11400000, guid: 78c6697ae0f7ed04c8b0b8b59519ae61, type: 2}
+  ImpactEffect: {fileID: 11400000, guid: 7942eed226c6d424596134d04568620f, type: 2}
   FireSound: {fileID: 2144087402316630096}
   ReloadingSound: {fileID: 3296545174007794114}
   EmptyClipSound: {fileID: 0}
   _IsReloading:
     _value: 0
   _ClipAmmo: 0
-  _RemainingAmmo: 0
 --- !u!1 &7409471678425265939
 GameObject:
   m_ObjectHideFlags: 0
@@ -931,6 +932,7 @@ MonoBehaviour:
   - {fileID: 7183023570646524750}
   - {fileID: 1355241337278460813}
   - {fileID: 3975634817489101740}
+  - {fileID: 810798184003196725}
   - {fileID: 8050771395639253397}
 --- !u!54 &2571715570075202959
 Rigidbody:
@@ -1016,6 +1018,8 @@ MonoBehaviour:
   Health: {fileID: 7183023570646524750}
   ThirdPersonAnimator: {fileID: 8017927657072056234}
   ThirdPersonWeaponAnimator: {fileID: 3312119741169775460}
+  FirstPersonAnimator: {fileID: 1034119322907186271}
+  FirstPersonWeaponAnimator: {fileID: 8418441767980720943}
   HitboxRoot: {fileID: 1355241337278460813}
   MoveSpeed: 6
   JumpForce: 10
@@ -4123,6 +4127,12 @@ Transform:
 --- !u!1 &8418441767973294225 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2623461487637154132, guid: 8e1f680fb43698c4ca7d7f9f8626deb9,
+    type: 3}
+  m_PrefabInstance: {fileID: 5817586930910222789}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8418441767980720943 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2623461487629744874, guid: 8e1f680fb43698c4ca7d7f9f8626deb9,
     type: 3}
   m_PrefabInstance: {fileID: 5817586930910222789}
   m_PrefabAsset: {fileID: 0}

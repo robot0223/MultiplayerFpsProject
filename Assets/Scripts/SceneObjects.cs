@@ -41,7 +41,29 @@ namespace FPS_personal_project
                 return _gameUI;
             }
         }
+        
+        public EffectModuleClient EffectModuleClient
+        {
+            get
+            {
+                if (_effectModuleClient == null && Runner != null && Runner.SceneManager != null && Runner.SceneManager.MainRunnerScene.IsValid())
+                {
+                    var effectModules = Runner.SceneManager.MainRunnerScene.GetComponents<EffectModuleClient>(true);
+                    if (effectModules.Length > 0)
+                    {
+                        _effectModuleClient = effectModules[0];
+                    }
+                }
 
+                return _effectModuleClient;
+            }
+        }
+
+
+
+
+
+        private EffectModuleClient _effectModuleClient;
         private GamePlay _gameplay;
         private GameUI _gameUI;
     }

@@ -2,6 +2,7 @@ using Fusion;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace FPS_personal_project
@@ -17,7 +18,7 @@ namespace FPS_personal_project
 
         public static void UpdatePlayerConnections(NetworkRunner runner, Action<PlayerRef> spawnPlayer, Action<PlayerRef, Player> despawnPlayer)
         {
-            Debug.LogWarning("updating player connections");
+            
             _tempSpawnPlayers.Clear();
             _tempSpawnedPlayers.Clear();
 
@@ -42,6 +43,10 @@ namespace FPS_personal_project
                     try
                     {
                         despawnPlayer(playerRef, player);
+                        if (runner.IsServer)
+                            MultiplayServerHostingHandler.Instance.SetCurrentNumberOfPlayers((ushort)runner.ActivePlayers.Count());
+                        // Debug.LogWarning(runner.ActivePlayers.Count());
+
                     }
                     catch (Exception exception)//TODO: after logging exception, change scene/try again etc.
                     {
@@ -56,6 +61,10 @@ namespace FPS_personal_project
                 try
                 {
                     spawnPlayer(_tempSpawnPlayers[i]);
+                    if(runner.IsServer)
+                        MultiplayServerHostingHandler.Instance.SetCurrentNumberOfPlayers((ushort)runner.ActivePlayers.Count());
+                    //Debug.LogWarning(runner.ActivePlayers.Count());
+
                 }
                 catch (Exception exception)
                 {

@@ -38,16 +38,16 @@ namespace FPS_personal_project
             UpdateAmmoProgress();
 
             // Modify UI text only when value changed.
-            if (_weapon.ClipAmmo == _lastClipAmmo && _weapon.RemainingAmmo == _lastRemainingAmmo)
+            if (_weapon.ClipAmmo == _lastClipAmmo && _weapon.MaxClipAmmo == _lastRemainingAmmo)
                 return;
 
             ClipAmmo.text = _weapon.ClipAmmo.ToString();
-            RemainingAmmo.text = _weapon.RemainingAmmo < 1000 ? _weapon.RemainingAmmo.ToString() : "-";
+            RemainingAmmo.text = _weapon.MaxClipAmmo < 1000 ? _weapon.MaxClipAmmo.ToString() : "-";
 
-            NoAmmoGroup.SetActive(_weapon.ClipAmmo == 0 && _weapon.RemainingAmmo == 0);
+            NoAmmoGroup.SetActive(_weapon.ClipAmmo == 0 && _weapon.MaxClipAmmo == 0);
 
             _lastClipAmmo = _weapon.ClipAmmo;
-            _lastRemainingAmmo = _weapon.RemainingAmmo;
+            _lastRemainingAmmo = _weapon.MaxClipAmmo;
         }
 
         private void SetWeapon(Weapon weapon)

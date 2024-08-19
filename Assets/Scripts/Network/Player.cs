@@ -21,6 +21,8 @@ namespace FPS_personal_project
         public Health Health;
         public Animator ThirdPersonAnimator;
         public Animator ThirdPersonWeaponAnimator;
+        public Animator FirstPersonAnimator;
+        public Animator FirstPersonWeaponAnimator;
         public HitboxRoot HitboxRoot;
 
         [Header("Setup")]
@@ -144,22 +146,36 @@ namespace FPS_personal_project
             var moveVelocity = GetAnimationMoveVelocity();
 
             // Set animation parameters.
-            ThirdPersonAnimator.SetFloat("LocomotionTime", Time.time * 2f);
-            ThirdPersonAnimator.SetBool("IsAlive", Health.IsAlive);
+            SetThirdPersonAnimFloat("LocomotionTime", Time.time * 2f);
+            SetThirdPersonAnimBool("AnimState_IsAlive", Health.IsAlive);
+            SetThirdPersonAnimBool("AnimState_InAir", !KCC.FixedData.IsGrounded);
+            SetThirdPersonAnimBool("AnimState_Run", _isMoving);
+            SetThirdPersonAnimBool("AnimState_Stand", !_isMoving);
+
+            SetFirstPersonAnimBool("AnimState_InAir", !KCC.FixedData.IsGrounded);
+            SetFirstPersonAnimBool("AnimState_Run", _isMoving);
+            SetFirstPersonAnimBool("AnimState_Stand", !_isMoving);
+            /*ThirdPersonAnimator.SetFloat("LocomotionTime", Time.time * 2f);
+            ThirdPersonAnimator.SetBool("AnimState_IsAlive", Health.IsAlive);
             ThirdPersonAnimator.SetBool("IsGrounded", KCC.FixedData.IsGrounded);
             ThirdPersonAnimator.SetBool("AnimState_InAir",!KCC.FixedData.IsGrounded);
             ThirdPersonAnimator.SetBool("AnimState_Run", _isMoving);
-            ThirdPersonAnimator.SetBool("AnimState_Stand", !_isMoving);
+            ThirdPersonAnimator.SetBool("AnimState_Stand", !_isMoving);*/
             if(Weapons.CurrentWeapon.IsReloading)
             {
-                ThirdPersonAnimator.SetTrigger("TriggerAction_Reloading");
-                ThirdPersonWeaponAnimator.SetTrigger("TriggerAction_Reloading");
+                SetThirdPersonAnimTrigger("TriggerAction_Reloading");
+               /* ThirdPersonAnimator.SetTrigger("TriggerAction_Reloading");
+                ThirdPersonWeaponAnimator.SetTrigger("TriggerAction_Reloading");*/
             }
-                
-            ThirdPersonAnimator.SetFloat("MoveX", moveVelocity.x, 0.05f, Time.deltaTime);
+            
+            SetThirdPersonAnimFloat("MoveX", moveVelocity.x, 0.05f, Time.deltaTime);
+            SetThirdPersonAnimFloat("MoveZ", moveVelocity.z, 0.05f, Time.deltaTime);
+            SetThirdPersonAnimFloat("MoveSpeed", moveVelocity.magnitude);
+            SetThirdPersonAnimFloat("Look", -KCC.GetLookRotation(true, false).x / 90f);
+            /*ThirdPersonAnimator.SetFloat("MoveX", moveVelocity.x, 0.05f, Time.deltaTime);
             ThirdPersonAnimator.SetFloat("MoveZ", moveVelocity.z, 0.05f, Time.deltaTime);
             ThirdPersonAnimator.SetFloat("MoveSpeed", moveVelocity.magnitude);
-            ThirdPersonAnimator.SetFloat("Look", -KCC.GetLookRotation(true, false).x / 90f);
+            ThirdPersonAnimator.SetFloat("Look", -KCC.GetLookRotation(true, false).x / 90f);*/
 
             if (Health.IsAlive == false)
             {
@@ -175,14 +191,18 @@ namespace FPS_personal_project
             if (_visibleJumpCount < _jumpCount)
             {
                 //ThirdPersonAnimator.SetTrigger("Jump");
-                ThirdPersonAnimator.SetBool("AnimState_Jump", true);
+                SetThirdPersonAnimBool("AnimState_Jump", true);
+                SetFirstPersonAnimBool("AnimState_Jump", true);
+                //ThirdPersonAnimator.SetBool("AnimState_Jump", true);
                 JumpSound.clip = JumpClips[Random.Range(0, JumpClips.Length)];
                 JumpSound.Play();
             }
 
             else if(_visibleJumpCount == _jumpCount)
             {
-                ThirdPersonAnimator.SetBool("AnimState_Jump", false);
+                //ThirdPersonAnimator.SetBool("AnimState_Jump", false);
+                SetThirdPersonAnimBool("AnimState_Jump", false);
+                SetFirstPersonAnimBool("AnimState_Jump", false);
             }
 
             _visibleJumpCount = _jumpCount;
@@ -257,9 +277,10 @@ namespace FPS_personal_project
 
             if (input.Buttons.IsSet(EInputButton.Fire))
             {
+                
                 bool justPressed = input.Buttons.WasPressed(_previousButtons, EInputButton.Fire);
                Weapons.Fire(justPressed);
-               // Health.StopImmortality();
+               Health.StopImmortality();
             }
             else if (input.Buttons.IsSet(EInputButton.Reload))
             {
@@ -305,6 +326,48 @@ namespace FPS_personal_project
         {
             FirstPersonRoot.SetActive(firstPerson);
             ThirdPersonRoot.SetActive(firstPerson == false);
+        }
+
+        private void SetThirdPersonAnimTrigger(string name)
+        {
+            ThirdPersonAnimator.SetTrigger(name);
+            ThirdPersonWeaponAnimator.SetTrigger(name);
+
+        }
+
+        private void SetThirdPersonAnimBool(string name, bool v)
+        {
+            ThirdPersonAnimator.SetBool(name,v);
+            ThirdPersonWeaponAnimator.SetBool(name,v);
+
+        }
+
+        private void SetThirdPersonAnimFloat(string name, float v,float d = default, float h = default)
+        {
+            ThirdPersonAnimator.SetFloat(name, v,d,h);
+            ThirdPersonWeaponAnimator.SetFloat(name, v,d,h);
+
+        }
+
+        private void SetFirstPersonAnimTrigger(string name)
+        {
+            FirstPersonAnimator.SetTrigger(name);
+            FirstPersonWeaponAnimator.SetTrigger(name);
+
+        }
+
+        private void SetFirstPersonAnimBool(string name, bool v)
+        {
+            FirstPersonAnimator.SetBool(name, v);
+            FirstPersonWeaponAnimator.SetBool(name, v);
+
+        }
+
+        private void SetFirstPersonAnimFloat(string name, float v, float d = default, float h = default)
+        {
+            FirstPersonAnimator.SetFloat(name, v,d,h);
+            FirstPersonWeaponAnimator.SetFloat(name, v,d,h);
+
         }
 
         private Vector3 GetAnimationMoveVelocity()
