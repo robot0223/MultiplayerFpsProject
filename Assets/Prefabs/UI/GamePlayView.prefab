@@ -348,7 +348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 478a53c7d5b6df9428454d98eb4d6827, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIKillFeed: {fileID: 5664307437182855930}
+  KillFeed: {fileID: 5664307437182855930}
 --- !u!1 &1999563798782407682
 GameObject:
   m_ObjectHideFlags: 0

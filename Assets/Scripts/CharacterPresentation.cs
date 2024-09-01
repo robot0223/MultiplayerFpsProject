@@ -23,6 +23,11 @@ public class CharacterPresentation : MonoBehaviour
     private void Update()
     {
         
+        //AttachWeapon1P();
+    }
+
+    private void LateUpdate()
+    {
         AttachWeapon1P();
     }
 

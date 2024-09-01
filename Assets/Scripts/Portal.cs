@@ -15,7 +15,8 @@ namespace FPS_personal_project
         // PRIVATE MEMBERS
 
         [SerializeField] private Portal _target;
-       
+
+        private bool _disabled = false;
 
         
 

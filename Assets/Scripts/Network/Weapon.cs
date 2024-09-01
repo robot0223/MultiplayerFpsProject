@@ -31,7 +31,8 @@ namespace FPS_personal_project
         public int ProjectilesPerShot = 1;
         public float Dispersion = 0f;
         public LayerMask HitMask;
-        public float MaxHitDistance = 100f;
+        public float MaxHitDistance = 100;
+        public bool InfinitHitDistance = false;
 
         [Header("Ammo")]
         public int MaxClipAmmo = 12;
@@ -51,7 +52,8 @@ namespace FPS_personal_project
         [FormerlySerializedAs("MuzzleTransform")]
         public Transform FirstPersonMuzzleTransform;
         public Transform ThirdPersonMuzzleTransform;
-        public VisualEffect MuzzleEffect;
+        public VisualEffect FirstPersonMuzzleEffect;
+        public VisualEffect ThirdPersonMuzzleEffect;
         public ProjectileVisual ProjectileVisualPrefab;
         public HitscanEffectTypeDefinition HitscanEffect;
         public SpatialEffectTypeDefinition ImpactEffect;
@@ -85,6 +87,11 @@ namespace FPS_personal_project
         private VisualEffect _muzzleEffectInstance;
         private SceneObjects _sceneObjects;
 
+
+        private void Awake()
+        {
+            MaxHitDistance = InfinitHitDistance ? float.PositiveInfinity : MaxHitDistance;
+        }
         public void Fire(Vector3 firePosition, Vector3 fireDirection, bool justPressed)
         {
            
@@ -231,7 +238,7 @@ namespace FPS_personal_project
                 //projectileVisual.SetHit(data.HitPosition, data.HitNormal, data.ShowHitEffect
                 Debug.LogWarning(Runner.GetSingleton<SceneObjects>().EffectModuleClient == null);
                 _sceneObjects.EffectModuleClient.vfxManagerInScene.GetComponent<HitscanEffectSystems>().Request(HitscanEffect, muzzleTransform.position, data.HitPosition);
-                _sceneObjects.EffectModuleClient.vfxManagerInScene.GetComponent<SpatialEffectSystems>().Request(ImpactEffect,data.HitPosition, muzzleTransform.transform.rotation);
+                _sceneObjects.EffectModuleClient.vfxManagerInScene.GetComponent<SpatialEffectSystems>().Request(ImpactEffect,data.HitPosition, Quaternion.FromToRotation(Vector3.up,data.HitNormal));
             }
 
             _visibleFireCount = _fireCount;
@@ -289,7 +296,10 @@ namespace FPS_personal_project
                 FireSound.PlayOneShot(FireSound.clip);
             }
 
-            MuzzleEffect.Play();
+        
+                FirstPersonMuzzleEffect.Play();
+          
+                ThirdPersonMuzzleEffect.Play();
             //_muzzleEffectInstance.SetActive(true);
 
             SetAnimationTrigger("TriggerAction_PrimaryFire");
@@ -318,7 +328,7 @@ namespace FPS_personal_project
             if (HasInputAuthority && Runner.IsForward)
             {
                 // For local player show UI hit effect.
-               // _sceneObjects.GameUI.PlayerView.Crosshair.ShowHit(enemyHealth.IsAlive == false, isCriticalHit);
+                _sceneObjects.GameUI.PlayerView.Crosshair.ShowHit(enemyHealth.IsAlive == false, isCriticalHit);
             }
         }
 

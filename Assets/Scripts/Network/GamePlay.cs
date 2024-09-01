@@ -1,6 +1,7 @@
 using Fusion;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace FPS_personal_project
@@ -35,12 +36,14 @@ namespace FPS_personal_project
 	/// </summary>
     public class GamePlay : NetworkBehaviour
     {
-        //public GameUI GameUI;
+        public GameUI GameUI;
         public Player PlayerPrefab;
         public float GameDuration = 180f;
         public float PlayerRespawnTime = 5f;
-        public int SpawnPointNum = 20;
         public bool AutoSpawnPointNum = true;
+        public int SpawnPointNum = 20;
+        [Networked][Capacity(32)]
+        public int ActivePlayers { get; set; }
         //public float DoubleDamageDuration = 30f;
 
         [Networked][Capacity(32)][HideInInspector]
@@ -63,6 +66,8 @@ namespace FPS_personal_project
         {
             SpawnPointNum = AutoSpawnPointNum ? GameObject.FindGameObjectsWithTag("SpawnPoint").Length : SpawnPointNum;
             _recentSpawnPoints = new(SpawnPointNum);
+            
+           
         }
         public void PlayerKilled(PlayerRef killerPlayerRef, PlayerRef victimePlayerRef, EWeaponType weaponType, bool isCriticalKill)
         {
@@ -85,7 +90,7 @@ namespace FPS_personal_project
 
             }
 
-            //update statistics of the victimp player
+            //update statistics of the victim player
             var victimData = AllPlayerData.Get(victimePlayerRef);
             victimData.Deaths++;
             victimData.IsAlive = false;
@@ -103,10 +108,17 @@ namespace FPS_personal_project
 
         public override void Spawned()
         {
+            if (GameUI == null)
+            {
+                Debug.LogError("No game ui provided. finding it in scene");
+                GameUI = FindAnyObjectByType<GameUI>();
+            }
+               
             
             if(Runner.Mode == SimulationModes.Server||Runner.Mode == SimulationModes.Host)
             {
                 Application.targetFrameRate = TickRate.Resolve(Runner.Config.Simulation.TickRateSelection).Server;
+                ActivePlayers = 0;
             }
 
             if(Runner.GameMode == GameMode.Shared)
@@ -120,11 +132,12 @@ namespace FPS_personal_project
         {
             if (HasStateAuthority == false)//game logic is server auth.
                 return;
+
            
             // PlayerManager is a special helper class which iterates over list of active players (NetworkRunner.ActivePlayers) and call spawn/despawn callbacks on demand.
             PlayerManager.UpdatePlayerConnections(Runner, SpawnPlayer, DespawnPlayer);
 
-            if (State == EGamePlayState.Skirmish && AllPlayerData.Count >1)
+            if (State == EGamePlayState.Skirmish && ActivePlayers >1)
             {
                 StartGamePlay();
             }
@@ -153,6 +166,7 @@ namespace FPS_personal_project
 
         public override void Render()
         {
+            
             //no need for server to run this part.
             if (Runner.Mode == SimulationModes.Server)
                 return;
@@ -160,10 +174,10 @@ namespace FPS_personal_project
             //every client must send its nickname to server when the game is started
             if(_isNicknameSent == false)
             {
-                if(PlayerPrefs.GetString("Menu.UserName") != null)
+                /*if(PlayerPrefs.GetString("Menu.UserName") != null)
                     RPC_SetPlayerNickname(Runner.LocalPlayer, PlayerPrefs.GetString("Menu.UserName"));//TODO:store data in menu.
-                else
-                    RPC_SetPlayerNickname( Runner.LocalPlayer, "Player" +  Runner.LocalPlayer.PlayerId.ToString());
+                else*/
+                    RPC_SetPlayerNickname( Runner.LocalPlayer, "Player" + AllPlayerData.Count.ToString());
                 _isNicknameSent = true;
             }
 
@@ -190,7 +204,7 @@ namespace FPS_personal_project
             playerData.IsAlive = true;
 
             AllPlayerData.Set(playerRef, playerData);
-
+            ActivePlayers++;
             var spawnPoint = GetSpawnPoint();
             var player = Runner.Spawn(PlayerPrefab, spawnPoint.position, spawnPoint.rotation, playerRef);
 
@@ -212,7 +226,7 @@ namespace FPS_personal_project
                 playerData.IsAlive = false;
                 AllPlayerData.Set(playerRef, playerData);
             }
-
+            ActivePlayers--;
             Runner.Despawn(player.Object);
 
             RecalculateStatisticPositions();
@@ -279,7 +293,7 @@ namespace FPS_personal_project
         {
             //stop all respawn coroutines(players can kill each other during skirmish)
             StopAllCoroutines();
-
+            
             State = EGamePlayState.Running;
             RemainingTime = TickTimer.CreateFromSeconds(Runner, GameDuration);
 
@@ -352,8 +366,8 @@ namespace FPS_personal_project
             {
                 victimNickname = victimData.Nickname;
             }
-
-            //GameUI.GameplayView.KillFeed.ShowKill(killerNickname, victimNickname, weaponType, isCriticalKill);
+            Debug.LogWarning($"killer name :{killerNickname} \n vicitim name: {victimNickname} \n weaponType:{weaponType == null}\n critical {isCriticalKill == null}");
+            GameUI.GameplayView.KillFeed.ShowKill(killerNickname, victimNickname, weaponType, isCriticalKill);
         }
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority, Channel = RpcChannel.Reliable)]

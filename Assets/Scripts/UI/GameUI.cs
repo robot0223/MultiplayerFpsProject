@@ -9,7 +9,7 @@ namespace FPS_personal_project
 {
     public class GameUI : MonoBehaviour
     {
-        public GamePlay gamePlay;
+        public GamePlay GamePlay;
         [HideInInspector]
         public NetworkRunner Runner;
 
@@ -18,7 +18,7 @@ namespace FPS_personal_project
        // public UIGameOverView GameOverView;
         public GameObject ScoreboardView;
         public GameObject MenuView;
-        /*public UISettingsView SettingsView;*/
+        public UISettingsView SettingsView;
         public GameObject DisconnectedView;
 
         public void OnRunnerShutdown(NetworkRunner runner, ShutdownReason reason)
@@ -27,7 +27,7 @@ namespace FPS_personal_project
                 return; // Regular shutdown - GameOver already active*/
 
             ScoreboardView.SetActive(false);
-            //SettingsView.gameObject.SetActive(false);
+            SettingsView.gameObject.SetActive(false);
             MenuView.gameObject.SetActive(false);
 
             DisconnectedView.SetActive(true);
@@ -47,10 +47,10 @@ namespace FPS_personal_project
         {
             PlayerView.gameObject.SetActive(false);
             MenuView.SetActive(false);
-            //SettingsView.gameObject.SetActive(false);
+            SettingsView.gameObject.SetActive(false);
             DisconnectedView.SetActive(false);
 
-            //SettingsView.LoadSettings();
+            SettingsView.LoadSettings();
 
             // Make sure the cursor starts unlocked
             Cursor.lockState = CursorLockMode.None;
@@ -62,13 +62,13 @@ namespace FPS_personal_project
         {
             if (Application.isBatchMode == true)
                 return;
-            if (gamePlay.Object == null || gamePlay.Object.IsValid == false)
+            if (GamePlay.Object == null || GamePlay.Object.IsValid == false)
                 return;
 
-            Runner = gamePlay.Runner;
+            Runner = GamePlay.Runner;
 
             var keyboard = Keyboard.current;
-            bool gameplayActive = gamePlay.State < EGamePlayState.Finished;
+            bool gameplayActive = GamePlay.State < EGamePlayState.Finished;
 
             ScoreboardView.SetActive(gameplayActive && keyboard != null && keyboard.tabKey.isPressed);
 
@@ -84,7 +84,7 @@ namespace FPS_personal_project
             if (playerObject != null)
             {
                 var player = playerObject.GetComponent<Player>();
-                var playerData = gamePlay.AllPlayerData.Get(Runner.LocalPlayer);
+                var playerData = GamePlay.AllPlayerData.Get(Runner.LocalPlayer);
 
                 PlayerView.UpdatePlayer(player, playerData);
                 PlayerView.gameObject.SetActive(gameplayActive);

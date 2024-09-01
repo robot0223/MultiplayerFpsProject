@@ -1,9 +1,6 @@
 using FPS_personal_project;
 using Fusion;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.Services.Matchmaker.Models;
+
 using UnityEngine;
 
 public class DamageArea : NetworkBehaviour
@@ -13,6 +10,7 @@ public class DamageArea : NetworkBehaviour
     public float continuousDamage;
     public float damageDuration;
     public bool instantKill;
+   
 
     private Transform _transform;
 
@@ -20,6 +18,12 @@ public class DamageArea : NetworkBehaviour
     {
         _transform = this.gameObject.transform;
     }
+
+    public override void Spawned()
+    {
+       
+    }
+
     public override void FixedUpdateNetwork()
     {
         
@@ -31,7 +35,7 @@ public class DamageArea : NetworkBehaviour
         Health health = other.gameObject.GetComponentInParent<Health>();
         if (instantKill)
             enterDamage = health.CurrentHealth;
-        other.gameObject.GetComponentInParent<Health>().ApplyDamage(Runner.LocalPlayer, enterDamage,
+        other.gameObject.GetComponentInParent<Health>().ApplyDamage(other.gameObject.GetComponentInParent<Player>().Object.InputAuthority, enterDamage,
             _transform.position, Vector3.zero, EWeaponType.None, false);
     }
 
@@ -41,7 +45,7 @@ public class DamageArea : NetworkBehaviour
         Health health = collision.gameObject.GetComponentInParent<Health>();
         if (instantKill)
             enterDamage = health.CurrentHealth;
-        collision.gameObject.GetComponentInParent<Health>().ApplyDamage(Runner.LocalPlayer, enterDamage,
+        collision.gameObject.GetComponentInParent<Health>().ApplyDamage(collision.gameObject.GetComponent<Player>().Object.InputAuthority, enterDamage,
             _transform.position, Vector3.zero, EWeaponType.None, false);
 
     }

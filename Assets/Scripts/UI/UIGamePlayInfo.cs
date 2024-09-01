@@ -52,7 +52,7 @@ namespace FPS_personal_project
             if (_gameUI.Runner == null)
                 return;
 
-            var gamePlay = _gameUI.gamePlay;
+            var gamePlay = _gameUI.GamePlay;
 
             if (gamePlay == null || gamePlay.Object.IsValid == false)
                 return;

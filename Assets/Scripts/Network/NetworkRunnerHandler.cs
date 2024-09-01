@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using UnityEngine.PlayerLoop;
 using Fusion.Photon.Realtime;
+using UnityEngine.Rendering.VirtualTexturing;
 
 public class NetworkRunnerHandler : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class NetworkRunnerHandler : MonoBehaviour
 
 
 #if UNITY_EDITOR
-            // gameMode = GameMode.AutoHostOrClient;
+             gameMode = GameMode.AutoHostOrClient;
             //gameMode = GameMode.Server;
 #elif DEVELOPMENT_BUILD
             //gameMode = GameMode.AutoHostOrClient;
@@ -67,7 +68,7 @@ public class NetworkRunnerHandler : MonoBehaviour
             }
         }
 
-        SceneManager.LoadSceneAsync("Level_Menu_Background");
+        SceneManager.LoadSceneAsync("Level_Menu_Background",LoadSceneMode.Single);
         // Destroy our DontDestroyOnLoad objects to finish the reset
         Destroy(networkRunner.gameObject);
         Destroy(gameObject);
@@ -93,28 +94,30 @@ public class NetworkRunnerHandler : MonoBehaviour
         var sceneInfo = new NetworkSceneInfo();
         if (scene.IsValid)
         {
-            sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+            sceneInfo.AddSceneRef(scene, LoadSceneMode.Single);
         }
 
         //doesn't hurt for server to have input listners so not gonna do #if !unity server for now.
         runner.ProvideInput = true;
 
         FusionAppSettings appSettings = PhotonAppSettings.Global.AppSettings;
-
+      
+#if UNITY_SERVER
         string fixedRegion = GetRegionFromStartupArgs();
         if (fixedRegion != "")
             appSettings.FixedRegion = fixedRegion;
 
         int port = GetServerPortFromStartupArgs();
-        if(port!=0)
+        if(port!= 0)
         {
             appSettings.Port = port;
         }
-        
-            
-        
+      
+         Debug.LogWarning($"InitializeNetworkRunner with port {port} and region {fixedRegion} done");
 
-        Debug.LogWarning($"InitializeNetworkRunner with port {port} and region {fixedRegion} done");
+  #endif
+
+
 
         return runner.StartGame(new StartGameArgs
         {
@@ -162,13 +165,13 @@ public class NetworkRunnerHandler : MonoBehaviour
         // var task = InitializeNetworkRunner(networkRunner, mode, NetAddress.Any(), 
         //      SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex), (runner) => { });
         var task = InitializeNetworkRunner(networkRunner, mode, NetAddress.Any(),
-              SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex), null);
+              SceneRef.FromIndex(SceneManager.GetSceneByName("Level_00_Main").buildIndex), null);
 #elif UNITY_SERVER
     var task = InitializeNetworkRunner(networkRunner, mode, NetAddress.Any(), 
-            SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex), (runner) => { });
+            SceneRef.FromIndex(SceneManager.GetSceneByName("Level_00_Main").buildIndex), (runner) => { });
 #else
 var task = InitializeNetworkRunner(networkRunner, mode, NetAddress.Any(), 
-            SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex), null);
+            SceneRef.FromIndex(SceneManager.GetSceneByName("Level_00_Main").buildIndex), null);
 #endif
         while (task.IsCompleted == false)
         {
@@ -186,6 +189,9 @@ var task = InitializeNetworkRunner(networkRunner, mode, NetAddress.Any(),
 
     public string GetRegionFromStartupArgs()
     {
+        if (System.Environment.CommandLine == null)
+            return "";
+
         if (System.Environment.CommandLine.Contains("-region eu"))
             return "eu";
 

@@ -171,7 +171,7 @@ namespace FPS_personal_project
             SetThirdPersonAnimFloat("MoveX", moveVelocity.x, 0.05f, Time.deltaTime);
             SetThirdPersonAnimFloat("MoveZ", moveVelocity.z, 0.05f, Time.deltaTime);
             SetThirdPersonAnimFloat("MoveSpeed", moveVelocity.magnitude);
-            SetThirdPersonAnimFloat("Look", -KCC.GetLookRotation(true, false).x / 90f);
+            SetThirdPersonAnimFloat("Look", -KCC.GetLookRotation(true, false).x /90f);
             /*ThirdPersonAnimator.SetFloat("MoveX", moveVelocity.x, 0.05f, Time.deltaTime);
             ThirdPersonAnimator.SetFloat("MoveZ", moveVelocity.z, 0.05f, Time.deltaTime);
             ThirdPersonAnimator.SetFloat("MoveSpeed", moveVelocity.magnitude);

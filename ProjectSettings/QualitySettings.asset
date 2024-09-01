@@ -55,8 +55,7 @@ QualitySettings:
     terrainBillboardStart: 50
     terrainFadeLength: 5
     terrainMaxTrees: 50
-    excludedTargetPlatforms:
-    - Server
+    excludedTargetPlatforms: []
   - serializedVersion: 3
     name: Balanced
     pixelLightCount: 0
@@ -106,8 +105,7 @@ QualitySettings:
     terrainBillboardStart: 50
     terrainFadeLength: 5
     terrainMaxTrees: 50
-    excludedTargetPlatforms:
-    - Server
+    excludedTargetPlatforms: []
   - serializedVersion: 3
     name: Performant
     pixelLightCount: 0
@@ -165,7 +163,7 @@ QualitySettings:
     Lumin: 0
     Nintendo Switch: 0
     PS4: 0
-    Server: 2
+    Server: 0
     Stadia: 0
     Standalone: 0
     WebGL: 0

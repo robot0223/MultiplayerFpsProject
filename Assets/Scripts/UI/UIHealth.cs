@@ -13,7 +13,7 @@ namespace FPS_personal_project
         public TextMeshProUGUI Value;
         //public Image Progress;
         public GameObject ImmortalityIndicator;
-        public GameObject HitTakenEffect;
+       //public GameObject HitTakenEffect;
         public GameObject DeathEffect;
         //public Animation HealthProgressAnimation;
         //public TextMeshProUGUI HealValue;
@@ -39,8 +39,8 @@ namespace FPS_personal_project
             if (currentHealth < _lastHealth)
             {
                 // Restart hit taken effect animation.
-                HitTakenEffect.SetActive(false);
-                HitTakenEffect.SetActive(true);
+               // HitTakenEffect.SetActive(false);
+               // HitTakenEffect.SetActive(true);
             }
 
             DeathEffect.SetActive(health.IsAlive == false);
@@ -59,7 +59,7 @@ namespace FPS_personal_project
 
         private void Awake()
         {
-            HitTakenEffect.SetActive(false);
+          //  HitTakenEffect.SetActive(false);
           //  HealValue.gameObject.SetActive(false);
         }
 

@@ -806,6 +806,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 9
   MaxHitDistance: 100
+  InfinitHitDistance: 1
   MaxClipAmmo: 25
   ReloadTime: 1
   Icon: {fileID: 21300000, guid: a5653c58086f51342b3eccfafca4e7ba, type: 3}
@@ -814,7 +815,8 @@ MonoBehaviour:
   WeaponAnimator: {fileID: 8418441767980720943}
   FirstPersonMuzzleTransform: {fileID: 5873417856982537926}
   ThirdPersonMuzzleTransform: {fileID: 943339390097253032}
-  MuzzleEffect: {fileID: 4767312563511576930}
+  FirstPersonMuzzleEffect: {fileID: 4767312563511576930}
+  ThirdPersonMuzzleEffect: {fileID: 6530315260832212805}
   ProjectileVisualPrefab: {fileID: 4216153532927076454, guid: 2036cfccded103648abad898009abf9c,
     type: 3}
   HitscanEffect: {fileID: 11400000, guid: 78c6697ae0f7ed04c8b0b8b59519ae61, type: 2}
@@ -1355,6 +1357,12 @@ Transform:
 --- !u!95 &3312119741169775460 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2416683450423081274, guid: 4359548176124f24ba75a91a5755e199,
+    type: 3}
+  m_PrefabInstance: {fileID: 900380796818541150}
+  m_PrefabAsset: {fileID: 0}
+--- !u!2083052967 &6530315260832212805 stripped
+VisualEffect:
+  m_CorrespondingSourceObject: {fileID: 6259612816211488027, guid: 4359548176124f24ba75a91a5755e199,
     type: 3}
   m_PrefabInstance: {fileID: 900380796818541150}
   m_PrefabAsset: {fileID: 0}
