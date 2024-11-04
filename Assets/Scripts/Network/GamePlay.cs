@@ -15,6 +15,7 @@ namespace FPS_personal_project
         [Networked,Capacity(24)]
         public string Nickname { get => default; set { } }
         public PlayerRef PlayerRef;
+        public CharacterRegistry.CharacterType CharacterType;
         public int Kills;
         public int Deaths;
         public int Suicides;
@@ -27,6 +28,7 @@ namespace FPS_personal_project
     public enum EGamePlayState
     {
         Skirmish = 0,
+        CharacterSelect = -1,       
         Running = 1,
         Finished = 2
     }
@@ -37,25 +39,38 @@ namespace FPS_personal_project
     public class GamePlay : NetworkBehaviour
     {
         public GameUI GameUI;
-        public Player PlayerPrefab;
+        //public Player PlayerPrefab;
+        public CharacterRegistry CharacterRegistry;
         public float GameDuration = 180f;
+        public float SelectionDuration = 40f;
         public float PlayerRespawnTime = 5f;
         public bool AutoSpawnPointNum = true;
         public int SpawnPointNum = 20;
+
+        [HideInInspector]
+        public bool SetChar = false;
+        [HideInInspector]
+        public CharacterRegistry.CharacterType LocalPlayerCharacterType;
         [Networked][Capacity(32)]
         public int ActivePlayers { get; set; }
+        [Networked][HideInInspector]
+        public int CharSelectedPlayers { get; set; }
         //public float DoubleDamageDuration = 30f;
 
         [Networked][Capacity(32)][HideInInspector]
         public NetworkDictionary<PlayerRef, PlayerData> AllPlayerData { get; }
         [Networked][HideInInspector]
         public TickTimer RemainingTime { get; set; }
+        [Networked]
+        [HideInInspector]
+        public TickTimer CharSelectionTime { get; set; }
         [Networked][HideInInspector]
         public EGamePlayState State { get; set; }
 
         //public bool DoubleDamageActive => State == EGameplayState.Running && RemainingTime.RemainingTime(Runner).GetValueOrDefault() < DoubleDamageDuration;
 
         private bool _isNicknameSent;
+        private bool _isCharacterSet;
         private float _runningStateTime;
         private List<Player> _spawnedPlayers = new(16);
         private List<PlayerRef> _pendingPlayers = new(16);
@@ -125,7 +140,7 @@ namespace FPS_personal_project
             {
                 throw new System.NotSupportedException("doesn't support shared.");
             }
-
+            
         }
 
         public override void FixedUpdateNetwork()
@@ -139,9 +154,15 @@ namespace FPS_personal_project
 
             if (State == EGamePlayState.Skirmish && ActivePlayers >1)
             {
-                StartGamePlay();
+                StartCharSelection();
+                //StartGamePlay();//StartCharSelection();
             }
             
+            if(State == EGamePlayState.CharacterSelect && (CharSelectionTime.Expired(Runner)|| CharSelectedPlayers == ActivePlayers))
+            {
+               StartGamePlay();
+            }
+               // StartGamePlay();
             if(State == EGamePlayState.Running)
             {
                 _runningStateTime += Runner.DeltaTime;
@@ -181,6 +202,16 @@ namespace FPS_personal_project
                 _isNicknameSent = true;
             }
 
+
+            if(SetChar)
+            {
+                RPC_SetCharacter(Runner.LocalPlayer, LocalPlayerCharacterType);
+                SetChar = false;
+                _isCharacterSet = true;
+            }
+
+           
+
         }
 
         private void SpawnPlayer(PlayerRef playerRef)
@@ -206,7 +237,9 @@ namespace FPS_personal_project
             AllPlayerData.Set(playerRef, playerData);
             ActivePlayers++;
             var spawnPoint = GetSpawnPoint();
-            var player = Runner.Spawn(PlayerPrefab, spawnPoint.position, spawnPoint.rotation, playerRef);
+            var player = Runner.Spawn(State == EGamePlayState.Running ?
+                CharacterRegistry.Characters[(int)playerData.CharacterType] : CharacterRegistry.Characters[1],
+                spawnPoint.position, spawnPoint.rotation, playerRef);
 
             //set playerinstance as playerobject to easily get it from other locations
             Runner.SetPlayerObject(playerRef, player.Object);
@@ -257,7 +290,9 @@ namespace FPS_personal_project
 
             //respawn player
             var spawnPoint = GetSpawnPoint();
-            var player = Runner.Spawn(PlayerPrefab, spawnPoint.position, spawnPoint.rotation, playerRef);
+            var player = Runner.Spawn(State == EGamePlayState.Running ?
+                CharacterRegistry.Characters[(int)playerData.CharacterType] : CharacterRegistry.Characters[1]
+                , spawnPoint.position, spawnPoint.rotation, playerRef);
 
             // Set player instance as PlayerObject to easily get it from other locations.
             Runner.SetPlayerObject(playerRef, player.Object);
@@ -289,12 +324,22 @@ namespace FPS_personal_project
             return spawnPoint;
         }
 
+        private void StartCharSelection()
+        {
+            State = EGamePlayState.CharacterSelect;
+            CharSelectionTime = TickTimer.CreateFromSeconds(Runner,SelectionDuration);
+            
+            
+        }
+
+
         private void StartGamePlay()
         {
             //stop all respawn coroutines(players can kill each other during skirmish)
             StopAllCoroutines();
-            
+
             State = EGamePlayState.Running;
+            
             RemainingTime = TickTimer.CreateFromSeconds(Runner, GameDuration);
 
             // Reset player data after skirmish and respawn players.
@@ -304,11 +349,12 @@ namespace FPS_personal_project
 
                 data.Kills = 0;
                 data.Deaths = 0;
+                data.Suicides = 0;
                 data.StatisticPosition = int.MaxValue;
                 data.IsAlive = false;
 
                 AllPlayerData.Set(data.PlayerRef, data);
-
+                Debug.LogWarning($"{data.Nickname}'s character type: {data.CharacterType}");
                 StartCoroutine(RespawnPlayer(data.PlayerRef, 0f));
             }
 
@@ -376,6 +422,15 @@ namespace FPS_personal_project
             var playerData = AllPlayerData.Get(playerRef);
             playerData.Nickname = nickname;
             AllPlayerData.Set(playerRef, playerData);
+        }
+
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority, Channel = RpcChannel.Reliable)]
+        private void RPC_SetCharacter(PlayerRef playerRef, CharacterRegistry.CharacterType type)
+        {
+            var playerData = AllPlayerData.Get(playerRef);
+            playerData.CharacterType = type;
+            AllPlayerData.Set(playerRef, playerData);
+            CharSelectedPlayers++;
         }
 
     }

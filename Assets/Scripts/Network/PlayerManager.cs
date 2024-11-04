@@ -45,6 +45,7 @@ namespace FPS_personal_project
                         despawnPlayer(playerRef, player);
                         if (runner.IsServer)
                             MultiplayServerHostingHandler.Instance.SetCurrentNumberOfPlayers((ushort)runner.ActivePlayers.Count());
+                        MultiplayServerHostingHandler.Instance.ClientDisconnected();
                         // Debug.LogWarning(runner.ActivePlayers.Count());
 
                     }

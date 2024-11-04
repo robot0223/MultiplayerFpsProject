@@ -10,7 +10,7 @@ namespace FPS_personal_project
     {
         public UIKillFeedItem killFeedItem;
         public float FeedLifetime = 6f;
-        public Sprite[] WeaponIcons;
+       // public Sprite[] WeaponIcons;
 
         public void ShowKill(string killer, string victim, EWeaponType weaponType, bool isCriticalKill)
         {
@@ -19,7 +19,7 @@ namespace FPS_personal_project
             killFeed.Killer.text = killer;
             killFeed.Victim.text = victim;
             //<TODO:this requires weapon icons to be sorted in inspector by human, later fix this to auto sort.>
-            killFeed.WeaponIcon.sprite = WeaponIcons[(int)weaponType];
+           // killFeed.WeaponIcon.sprite = WeaponIcons[(int)weaponType];
             killFeed.CriticalKillGroup.SetActive(isCriticalKill);
 
             // Kill feed item is fading in time automatically via animation component.

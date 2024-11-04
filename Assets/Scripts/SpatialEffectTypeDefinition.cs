@@ -7,7 +7,7 @@ using UnityEngine.VFX;
 namespace FPS_personal_project
 {
 
-    [CreateAssetMenu(fileName = "SpatialEffectTypeDefinition", menuName = "FPS Sample/Effect/SpatialEffectTypeDefinition")]
+    [CreateAssetMenu(fileName = "SpatialEffectTypeDefinition", menuName = "FPS_personal_project/Effect/SpatialEffectTypeDefinition")]
     public class SpatialEffectTypeDefinition : ScriptableObject
     {
         [Header("Visual Effect")]

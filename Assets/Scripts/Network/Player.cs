@@ -19,8 +19,10 @@ namespace FPS_personal_project
         public KCC KCC;
         public Weapons Weapons;
         public Health Health;
+        public Animator HitboxAnimator;
+        //public NetworkMecanimAnimator ThirdPersonNetworkAnimator;
         public Animator ThirdPersonAnimator;
-        public Animator ThirdPersonWeaponAnimator;
+       /// public Animator ThirdPersonWeaponAnimator;
         public Animator FirstPersonAnimator;
         public Animator FirstPersonWeaponAnimator;
         public HitboxRoot HitboxRoot;
@@ -37,6 +39,7 @@ namespace FPS_personal_project
         public NetworkObject SprayPrefab;
 
         [Header("Movement")]
+        public bool overrideKcc = false;
         public float UpGravity = 15f;
         public float DownGravity = 25f;
         public float GroundAcceleration = 55f;
@@ -50,10 +53,12 @@ namespace FPS_personal_project
         private int _jumpCount { get; set; }
         [Networked]
         private Vector3 _moveVelocity { get; set; }
+        [Networked]
+        private Vector3 _animVelocity { get; set; }
 
         private int _visibleJumpCount;
-
-        private bool _isMoving = false;
+        [Networked]
+        private bool _isMoving { get; set; }
         private bool _doubleJump;
 
         private EnvironmentProcessor _environmentProcessor;
@@ -92,6 +97,7 @@ namespace FPS_personal_project
 
            _environmentProcessor = KCC.GetProcessor<EnvironmentProcessor>();
             _sceneObjects = Runner.GetSingleton<SceneObjects>();
+            
         }
        
         public override void FixedUpdateNetwork()
@@ -127,6 +133,7 @@ namespace FPS_personal_project
             //Debug.Log("Player.cs fixed update network");
             if (GetInput(out NetworkedInput input))
             {
+               
                 // Input is processed on InputAuthority and StateAuthority.
                 ProcessInput(input);
             }
@@ -136,21 +143,31 @@ namespace FPS_personal_project
                 MovePlayer();
                 RefreshCamera();
             }
+            /* if(Runner.IsForward)
+             {
+                 var moveVelocity = GetAnimationMoveVelocity();
+                 ThirdPersonNetworkAnimator.Animator.SetFloat("MoveX", moveVelocity.x, 0.05f, Time.deltaTime);
+                 ThirdPersonNetworkAnimator.Animator.SetFloat("MoveZ", moveVelocity.z, 0.05f, Time.deltaTime);
+             }*/
+            
         }
 
         public override void Render()
         {
             if (_sceneObjects.Gameplay.State == EGamePlayState.Finished)
                 return;
+           
+           if(HasInputAuthority)
+                _animVelocity = GetAnimationMoveVelocity();
 
-            var moveVelocity = GetAnimationMoveVelocity();
-
-            // Set animation parameters.
-            SetThirdPersonAnimFloat("LocomotionTime", Time.time * 2f);
             SetThirdPersonAnimBool("AnimState_IsAlive", Health.IsAlive);
             SetThirdPersonAnimBool("AnimState_InAir", !KCC.FixedData.IsGrounded);
             SetThirdPersonAnimBool("AnimState_Run", _isMoving);
             SetThirdPersonAnimBool("AnimState_Stand", !_isMoving);
+           //ThirdPersonAnimator.SetFloat("MoveX", moveVelocity.x);
+           //ThirdPersonAnimator.SetFloat("MoveZ", moveVelocity.z);
+            SetThirdPersonAnimFloat("MoveX", _animVelocity.x, 0.05f, Time.deltaTime);
+            SetThirdPersonAnimFloat("MoveZ", _animVelocity.z, 0.05f, Time.deltaTime);
 
             SetFirstPersonAnimBool("AnimState_InAir", !KCC.FixedData.IsGrounded);
             SetFirstPersonAnimBool("AnimState_Run", _isMoving);
@@ -167,11 +184,13 @@ namespace FPS_personal_project
                /* ThirdPersonAnimator.SetTrigger("TriggerAction_Reloading");
                 ThirdPersonWeaponAnimator.SetTrigger("TriggerAction_Reloading");*/
             }
+
             
-            SetThirdPersonAnimFloat("MoveX", moveVelocity.x, 0.05f, Time.deltaTime);
-            SetThirdPersonAnimFloat("MoveZ", moveVelocity.z, 0.05f, Time.deltaTime);
-            SetThirdPersonAnimFloat("MoveSpeed", moveVelocity.magnitude);
-            SetThirdPersonAnimFloat("Look", -KCC.GetLookRotation(true, false).x /90f);
+            //SetThirdPersonAnimFloat("MoveX", moveVelocity.x, 0.05f, Time.deltaTime);
+            //SetThirdPersonAnimFloat("MoveZ", moveVelocity.z, 0.05f, Time.deltaTime);
+
+            // SetThirdPersonAnimFloat("MoveSpeed", moveVelocity.magnitude);
+            //SetThirdPersonAnimFloat("Look", -KCC.GetLookRotation(true, false).x /90f);
             /*ThirdPersonAnimator.SetFloat("MoveX", moveVelocity.x, 0.05f, Time.deltaTime);
             ThirdPersonAnimator.SetFloat("MoveZ", moveVelocity.z, 0.05f, Time.deltaTime);
             ThirdPersonAnimator.SetFloat("MoveSpeed", moveVelocity.magnitude);
@@ -184,8 +203,14 @@ namespace FPS_personal_project
                 int upperBodyLayerIndex = ThirdPersonAnimator.GetLayerIndex("Locomotion");
                 ThirdPersonAnimator.SetLayerWeight(upperBodyLayerIndex, Mathf.Max(0f, ThirdPersonAnimator.GetLayerWeight(upperBodyLayerIndex) - Time.deltaTime));
 
-                int lookLayerIndex = ThirdPersonAnimator.GetLayerIndex("Look");
-                ThirdPersonAnimator.SetLayerWeight(lookLayerIndex, Mathf.Max(0f, ThirdPersonAnimator.GetLayerWeight(lookLayerIndex) - Time.deltaTime));
+                //int lookLayerIndex = ThirdPersonAnimator.GetLayerIndex("Look");
+                //ThirdPersonAnimator.SetLayerWeight(lookLayerIndex, Mathf.Max(0f, ThirdPersonAnimator.GetLayerWeight(lookLayerIndex) - Time.deltaTime));
+
+                int upperBodyLayerIndexHitbox = HitboxAnimator.GetLayerIndex("Locomotion");
+                ThirdPersonAnimator.SetLayerWeight(upperBodyLayerIndexHitbox, Mathf.Max(0f, ThirdPersonAnimator.GetLayerWeight(upperBodyLayerIndexHitbox) - Time.deltaTime));
+
+                //int lookLayerIndexHitbox = HitboxAnimator.GetLayerIndex("Look");
+                //ThirdPersonAnimator.SetLayerWeight(lookLayerIndexHitbox, Mathf.Max(0f, ThirdPersonAnimator.GetLayerWeight(lookLayerIndexHitbox) - Time.deltaTime));
             }
 
             if (_visibleJumpCount < _jumpCount)
@@ -226,12 +251,23 @@ namespace FPS_personal_project
 
         private void SetMovementData()
         {
-            _environmentProcessor.KinematicSpeed = MoveSpeed;
-            _environmentProcessor.KinematicAirAcceleration = AirAcceleration;
-            _environmentProcessor.KinematicAirFriction = AirDeceleration;
-            _environmentProcessor.KinematicGroundAcceleration = GroundAcceleration;
-            _environmentProcessor.KinematicGroundFriction = GroundDeceleration;
-            _environmentProcessor.Gravity = KCC.FixedData.RealVelocity.y >= 0f ? -(new Vector3(0,UpGravity,0)) : -(new Vector3(0,DownGravity,0));
+            if (HasInputAuthority)
+            {
+                _environmentProcessor.KinematicSpeed = MoveSpeed;
+                if (overrideKcc)
+                {
+
+
+                   
+                    _environmentProcessor.KinematicAirAcceleration = AirAcceleration;
+                    _environmentProcessor.KinematicAirFriction = AirDeceleration;
+                    _environmentProcessor.KinematicGroundAcceleration = GroundAcceleration;
+                    _environmentProcessor.KinematicGroundFriction = GroundDeceleration;
+                    _environmentProcessor.Gravity = KCC.FixedData.RealVelocity.y >= 0f ? -(new Vector3(0, UpGravity, 0)) : -(new Vector3(0, DownGravity, 0));
+
+
+                }
+            }
         }
 
         private void ProcessInput(NetworkedInput input)
@@ -245,7 +281,9 @@ namespace FPS_personal_project
 
             var inputDirection = KCC.FixedData.TransformRotation * new Vector3(input.MoveDirection.x, 0f, input.MoveDirection.y);
             var jumpImpulse = Vector3.zero;
-           
+            /*_animVelocity = new Vector2(inputDirection.x, inputDirection.y);
+            _animVelocity.Normalize();
+            _animVelocity = transform.InverseTransformVector(_animVelocity);*/
             if (input.Buttons.WasPressed(_previousButtons, EInputButton.Jump))
             {
                 if (KCC.FixedData.IsGrounded)
@@ -331,22 +369,23 @@ namespace FPS_personal_project
         private void SetThirdPersonAnimTrigger(string name)
         {
             ThirdPersonAnimator.SetTrigger(name);
-            ThirdPersonWeaponAnimator.SetTrigger(name);
-
+           // ThirdPersonWeaponAnimator.SetTrigger(name);
+            HitboxAnimator.SetTrigger(name);
         }
 
         private void SetThirdPersonAnimBool(string name, bool v)
         {
             ThirdPersonAnimator.SetBool(name,v);
-            ThirdPersonWeaponAnimator.SetBool(name,v);
+            //ThirdPersonWeaponAnimator.SetBool(name,v);
+            HitboxAnimator.SetBool(name, v);
 
         }
 
         private void SetThirdPersonAnimFloat(string name, float v,float d = default, float h = default)
         {
             ThirdPersonAnimator.SetFloat(name, v,d,h);
-            ThirdPersonWeaponAnimator.SetFloat(name, v,d,h);
-
+          //  ThirdPersonWeaponAnimator.SetFloat(name, v,d,h);
+            HitboxAnimator.SetFloat(name, v, d, h);
         }
 
         private void SetFirstPersonAnimTrigger(string name)
@@ -384,7 +423,7 @@ namespace FPS_personal_project
             {
                 velocity.Normalize();
             }
-
+           // Debug.LogWarning(velocity);
             // Transform velocity vector to local space.
             return transform.InverseTransformVector(velocity);
         }

@@ -21,6 +21,9 @@ public class NetworkRunnerHandler : MonoBehaviour
 
     NetworkRunner networkRunner;
 
+    public static string targetIp;
+    public static int? targetPort;
+
     private void Awake()
     {
         NetworkRunner networkRunnerInScene = FindObjectOfType<NetworkRunner>();
@@ -60,6 +63,7 @@ public class NetworkRunnerHandler : MonoBehaviour
 
     public void ShutdownAll()
     {
+        Debug.LogError("Shutdown All Called. Logging this as error for now");
         foreach (var runner in NetworkRunner.Instances.ToList())
         {
             if (runner != null && runner.IsRunning)
@@ -68,7 +72,7 @@ public class NetworkRunnerHandler : MonoBehaviour
             }
         }
 
-        SceneManager.LoadSceneAsync("Level_Menu_Background",LoadSceneMode.Single);
+        SceneManager.LoadScene("Level_Menu_Background");
         // Destroy our DontDestroyOnLoad objects to finish the reset
         Destroy(networkRunner.gameObject);
         Destroy(gameObject);
@@ -91,6 +95,8 @@ public class NetworkRunnerHandler : MonoBehaviour
             objectProvider = runner.gameObject.AddComponent<NetworkObjectProviderDefault>();
         }
 
+        Debug.LogError(scene);
+
         var sceneInfo = new NetworkSceneInfo();
         if (scene.IsValid)
         {
@@ -112,6 +118,7 @@ public class NetworkRunnerHandler : MonoBehaviour
         {
             appSettings.Port = port;
         }
+        
       
          Debug.LogWarning($"InitializeNetworkRunner with port {port} and region {fixedRegion} done");
 
@@ -216,11 +223,11 @@ var task = InitializeNetworkRunner(networkRunner, mode, NetAddress.Any(),
         else if (System.Environment.CommandLine.Contains("-region usw"))
             return "usw";
 
-        Debug.Log("no region provided defaulting to asia");
-        return "asia";
+        Debug.Log("no region provided defaulting to kr");
+        return "kr";
     }
 
-    public  int GetServerPortFromStartupArgs()
+    public  static int GetServerPortFromStartupArgs()
     {
         int port = 0;
         string[] commandLineArgs = System.Environment.GetCommandLineArgs();
@@ -236,5 +243,20 @@ var task = InitializeNetworkRunner(networkRunner, mode, NetAddress.Any(),
         return port;
     }
 
+    public static int GetServerIpFromStartupArgs()
+    {
+        int ip = 0;
+        string[] commandLineArgs = System.Environment.GetCommandLineArgs();
+        for(int i =0; i < commandLineArgs.Length;i++)
+        {
+            if (commandLineArgs[i].Contains("ip"))
+            {
+                int.TryParse(commandLineArgs[i+1], out ip);
+                Debug.LogWarning($"found ip {commandLineArgs[i]} and ip should be {commandLineArgs[i + 1]}");
+                return ip;
+            }
+        }
+        return ip;
+    }
 
 }

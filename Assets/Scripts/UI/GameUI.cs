@@ -12,7 +12,9 @@ namespace FPS_personal_project
         public GamePlay GamePlay;
         [HideInInspector]
         public NetworkRunner Runner;
-
+        [HideInInspector]
+        public EGamePlayState State;
+        private EGamePlayState _preState;
         public UIPlayerView PlayerView;
         public UIGamePlayView GameplayView;
        // public UIGameOverView GameOverView;
@@ -20,6 +22,7 @@ namespace FPS_personal_project
         public GameObject MenuView;
         public UISettingsView SettingsView;
         public GameObject DisconnectedView;
+        public UICharSelectionView CharSelectionView;
 
         public void OnRunnerShutdown(NetworkRunner runner, ShutdownReason reason)
         {
@@ -35,6 +38,7 @@ namespace FPS_personal_project
 
         public void GoToMenu()
         {
+            Debug.LogError("Go to menu");
             if (Runner != null)
             {
                 Runner.Shutdown();
@@ -52,6 +56,8 @@ namespace FPS_personal_project
 
             SettingsView.LoadSettings();
 
+            
+
             // Make sure the cursor starts unlocked
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -64,9 +70,10 @@ namespace FPS_personal_project
                 return;
             if (GamePlay.Object == null || GamePlay.Object.IsValid == false)
                 return;
-
+            
             Runner = GamePlay.Runner;
-
+            
+            State = GamePlay.State;
             var keyboard = Keyboard.current;
             bool gameplayActive = GamePlay.State < EGamePlayState.Finished;
 
@@ -93,6 +100,27 @@ namespace FPS_personal_project
             {
                 PlayerView.gameObject.SetActive(false);
             }
+
+            if (_preState != null && _preState != State)
+                CharSelectionView.gameObject.SetActive(State == EGamePlayState.CharacterSelect);
+
+            if(State == EGamePlayState.CharacterSelect)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+
+            if(GamePlay.SetChar)
+            {
+                Cursor.lockState= CursorLockMode.Locked;
+                Cursor.visible = true;
+            }
+            /*else if(gameplayActive)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }*/
+            _preState = State;
         }
 
     }

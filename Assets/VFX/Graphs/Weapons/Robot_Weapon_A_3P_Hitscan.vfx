@@ -42,7 +42,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d4c867f6b72b714dbb5fd1780afe208, type: 3}
-  m_Name: Terraformer_A_3P_HitScan
+  m_Name: Robot_Weapon_A_3P_Hitscan
   m_EditorClassIdentifier: 
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 0}
@@ -100,7 +100,7 @@ VisualEffectResource:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Terraformer_A_3P_HitScan
+  m_Name: Robot_Weapon_A_3P_Hitscan
   m_Graph: {fileID: 114350483966674976}
   m_Infos:
     m_RendererSettings:
@@ -5317,7 +5317,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 4
+      m_SerializableObject: 1
     m_Space: 2147483647
   m_Property:
     name: o
@@ -5964,7 +5964,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"colorKeys":[{"color":{"r":1.93771493434906,"g":4.594792366027832,"b":3.7428362369537355,"a":1.0},"time":0.06764324754476547},{"color":{"r":0.9239874482154846,"g":225.9248504638672,"b":290.775634765625,"a":1.0},"time":0.6058899760246277},{"color":{"r":0.0,"g":7.792119026184082,"b":97.00584411621094,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":0.0,"time":0.0},{"alpha":1.0,"time":0.3158617615699768},{"alpha":1.0,"time":0.7499961853027344},{"alpha":0.0,"time":0.9882352948188782}],"gradientMode":0}'
+      m_SerializableObject: '{"colorKeys":[{"color":{"r":295.5310363769531,"g":296.9030456542969,"b":7.7723283767700199,"a":1.0},"time":0.0011749446857720614},{"color":{"r":291.113037109375,"g":295.1495056152344,"b":12.194326400756836,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}],"gradientMode":0}'
     m_Space: 2147483647
   m_Property:
     name: gradient
@@ -7515,7 +7515,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"colorKeys":[{"color":{"r":0.0006070539820939302,"g":0.0006070539820939302,"b":0.0006070539820939302,"a":1.0},"time":0.0},{"color":{"r":0.1693614274263382,"g":1.8833340406417847,"b":2.9975056648254396,"a":1.0},"time":0.6764782071113586},{"color":{"r":6.661848545074463,"g":182.24781799316407,"b":296.90301513671877,"a":1.0},"time":0.9970549941062927}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":0.9882352948188782}],"gradientMode":0}'
+      m_SerializableObject: '{"colorKeys":[{"color":{"r":295.5310363769531,"g":296.9030456542969,"b":7.7723283767700199,"a":1.0},"time":0.0011749446857720614},{"color":{"r":291.113037109375,"g":295.1495056152344,"b":12.194326400756836,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}],"gradientMode":0}'
     m_Space: 2147483647
   m_Property:
     name: gradient
@@ -8229,7 +8229,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"x":0.26352792978286745,"y":0.8867924213409424,"z":0.7994680404663086}'
+      m_SerializableObject: '{"x":0.856603741645813,"y":0.8110286593437195,"z":0.14061227440834046}'
     m_Space: 2147483647
   m_Property:
     name: Color
@@ -8544,7 +8544,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 50
+      m_SerializableObject: 100
     m_Space: 2147483647
   m_Property:
     name: o

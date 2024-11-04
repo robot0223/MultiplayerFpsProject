@@ -1,5 +1,4 @@
 using Fusion;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
@@ -8,7 +7,7 @@ namespace FPS_personal_project
 {
     public enum EWeaponType
     {
-        None,
+        None = -1,
         Terraformer_GooGun,
         Robot_BarrelMachineGun,
         Terraformer_Sniper,
@@ -27,6 +26,8 @@ namespace FPS_personal_project
         public bool IsAutomatic = true;
         public float Damage = 10f;
         public float FireRate = 100;
+        public bool isProjectile = false;
+        public NetworkObject ProjectilePrefab;
         [Range(1, 20)]
         public int ProjectilesPerShot = 1;
         public float Dispersion = 0f;
@@ -46,7 +47,7 @@ namespace FPS_personal_project
         public Animator WeaponAnimator;
         [FormerlySerializedAs("WeaponVisual")]
         //public GameObject FirstPersonVisual;
-       // public GameObject ThirdPersonVisual;
+        // public GameObject ThirdPersonVisual;
 
         [Header("Fire Effect")]
         [FormerlySerializedAs("MuzzleTransform")]
@@ -94,7 +95,7 @@ namespace FPS_personal_project
         }
         public void Fire(Vector3 firePosition, Vector3 fireDirection, bool justPressed)
         {
-           
+
             /*if (IsCollected == false)
                 return;*/
             if (justPressed == false && IsAutomatic == false)
@@ -134,12 +135,12 @@ namespace FPS_personal_project
 
         public void Reload()
         {
-           /* if (IsCollected == false)
-                return;*/
+            /* if (IsCollected == false)
+                 return;*/
             if (ClipAmmo >= MaxClipAmmo)
                 return;
-           /* if (RemainingAmmo <= 0)
-                return;*/
+            /* if (RemainingAmmo <= 0)
+                 return;*/
             if (IsReloading)
                 return;
             if (_fireCooldown.ExpiredOrNotRunning(Runner) == false)
@@ -154,16 +155,16 @@ namespace FPS_personal_project
             RemainingAmmo += amount;
         }*/
 
-       /* public void ToggleVisibility(bool isVisible)
-        {
-            FirstPersonVisual.SetActive(isVisible);
-            ThirdPersonVisual.SetActive(isVisible);
+        /* public void ToggleVisibility(bool isVisible)
+         {
+             FirstPersonVisual.SetActive(isVisible);
+             ThirdPersonVisual.SetActive(isVisible);
 
-            if (_muzzleEffectInstance != null)
-            {
-                _muzzleEffectInstance.SetActive(false);
-            }
-        }*/
+             if (_muzzleEffectInstance != null)
+             {
+                 _muzzleEffectInstance.SetActive(false);
+             }
+         }*/
 
         public float GetReloadProgress()
         {
@@ -180,24 +181,24 @@ namespace FPS_personal_project
                 //ClipAmmo = Mathf.Clamp(StartAmmo, 0, MaxClipAmmo);
                 //RemainingAmmo = StartAmmo - ClipAmmo;
                 ClipAmmo = MaxClipAmmo;
-               
+
             }
 
             _visibleFireCount = _fireCount;
 
             float fireTime = 60f / FireRate;
             _fireTicks = Mathf.CeilToInt(fireTime / Runner.DeltaTime);
-           
-           /* _muzzleEffectInstance = Instantiate(MuzzleEffectPrefab, HasInputAuthority ? FirstPersonMuzzleTransform : ThirdPersonMuzzleTransform);
-            _muzzleEffectInstance.SetActive(false);*/
+
+            /* _muzzleEffectInstance = Instantiate(MuzzleEffectPrefab, HasInputAuthority ? FirstPersonMuzzleTransform : ThirdPersonMuzzleTransform);
+             _muzzleEffectInstance.SetActive(false);*/
 
             _sceneObjects = Runner.GetSingleton<SceneObjects>();
         }
 
         public override void FixedUpdateNetwork()
         {
-           /* if (IsCollected == false)
-                return;*/
+            /* if (IsCollected == false)
+                 return;*/
 
             if (ClipAmmo == 0)
             {
@@ -211,10 +212,10 @@ namespace FPS_personal_project
                 IsReloading = false;
 
                 int reloadAmmo = MaxClipAmmo - ClipAmmo;
-               // reloadAmmo = Mathf.Min(reloadAmmo, RemainingAmmo);
+                // reloadAmmo = Mathf.Min(reloadAmmo, RemainingAmmo);
 
                 ClipAmmo += reloadAmmo;
-               // RemainingAmmo -= reloadAmmo;
+                // RemainingAmmo -= reloadAmmo;
 
                 // Add small prepare time after reload.
                 _fireCooldown = TickTimer.CreateFromSeconds(Runner, 0.25f);
@@ -236,16 +237,16 @@ namespace FPS_personal_project
 
                 //var projectileVisual = Instantiate(ProjectileVisualPrefab, muzzleTransform.position, muzzleTransform.rotation);
                 //projectileVisual.SetHit(data.HitPosition, data.HitNormal, data.ShowHitEffect
-                Debug.LogWarning(Runner.GetSingleton<SceneObjects>().EffectModuleClient == null);
+                //Debug.LogWarning(Runner.GetSingleton<SceneObjects>().EffectModuleClient == null);
                 _sceneObjects.EffectModuleClient.vfxManagerInScene.GetComponent<HitscanEffectSystems>().Request(HitscanEffect, muzzleTransform.position, data.HitPosition);
-                _sceneObjects.EffectModuleClient.vfxManagerInScene.GetComponent<SpatialEffectSystems>().Request(ImpactEffect,data.HitPosition, Quaternion.FromToRotation(Vector3.up,data.HitNormal));
+                _sceneObjects.EffectModuleClient.vfxManagerInScene.GetComponent<SpatialEffectSystems>().Request(ImpactEffect, data.HitPosition, Quaternion.FromToRotation(Vector3.up, data.HitNormal));
             }
 
             _visibleFireCount = _fireCount;
 
             if (_reloadingVisible != IsReloading)
             {
-                
+
 
                 if (IsReloading)
                 {
@@ -259,33 +260,43 @@ namespace FPS_personal_project
 
         private void FireProjectile(Vector3 firePosition, Vector3 fireDirection)
         {
-
-            var projectileData = new ProjectileData();
-            var hitOptions = HitOptions.IncludePhysX | HitOptions.IgnoreInputAuthority;
-
-          
-            // Whole projectile path and effects are immediately processed (= hitscan projectile).
-            if (Runner.LagCompensation.Raycast(firePosition, fireDirection, MaxHitDistance,
-                   player: Object.InputAuthority, out var hit, HitMask, hitOptions))
+            if (!isProjectile)
             {
-               
-                projectileData.HitPosition = hit.Point;
-                projectileData.HitNormal = hit.Normal;
 
-                if (hit.Hitbox != null)
+
+                var projectileData = new ProjectileData();
+                var hitOptions = HitOptions.IncludePhysX | HitOptions.IgnoreInputAuthority;
+
+
+                // Whole projectile path and effects are immediately processed (= hitscan projectile).
+                if (Runner.LagCompensation.Raycast(firePosition, fireDirection, MaxHitDistance,
+                       player: Object.InputAuthority, out var hit, HitMask, hitOptions))
                 {
-                    ApplyDamage(hit.Hitbox, hit.Point, fireDirection);
-                   
+
+                    projectileData.HitPosition = hit.Point;
+                    projectileData.HitNormal = hit.Normal;
+
+                    if (hit.Hitbox != null)
+                    {
+                        ApplyDamage(hit.Hitbox, hit.Point, fireDirection);
+
+                    }
+                    else
+                    {
+                        //Hit effect is shown only when player hits solid object.
+                        projectileData.ShowHitEffect = true;
+
+                    }
                 }
-                else
-                {
-                     //Hit effect is shown only when player hits solid object.
-                    projectileData.ShowHitEffect = true;
-                    
-                }
+                _projectileData.Set(_fireCount % _projectileData.Length, projectileData);
             }
+            else//projectile is not finished....
+            {
+                Runner.Spawn(ProjectilePrefab, transform.position + Vector3.forward,
+                    Quaternion.LookRotation(Vector3.forward), Object.InputAuthority);
+            }
+           
 
-            _projectileData.Set(_fireCount % _projectileData.Length, projectileData);
             _fireCount++;
         }
 
@@ -296,10 +307,10 @@ namespace FPS_personal_project
                 FireSound.PlayOneShot(FireSound.clip);
             }
 
-        
-                FirstPersonMuzzleEffect.Play();
-          
-                ThirdPersonMuzzleEffect.Play();
+
+            FirstPersonMuzzleEffect.Play();
+
+            ThirdPersonMuzzleEffect.Play();
             //_muzzleEffectInstance.SetActive(true);
 
             SetAnimationTrigger("TriggerAction_PrimaryFire");

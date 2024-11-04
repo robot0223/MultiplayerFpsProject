@@ -331,7 +331,7 @@ Transform:
   m_GameObject: {fileID: 4453367740714115683}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 2.5538167e-18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -357,7 +357,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 8117720699975978096}
-  m_Follow: {fileID: 8494544351458728272}
+  m_Follow: {fileID: 1034119322917075899}
   m_Lens:
     FieldOfView: 60.000004
     OrthographicSize: 5
@@ -800,6 +800,8 @@ MonoBehaviour:
   IsAutomatic: 1
   Damage: 10
   FireRate: 1000
+  isProjectile: 0
+  ProjectilePrefab: {fileID: 0}
   ProjectilesPerShot: 1
   Dispersion: 0
   HitMask:
@@ -1018,13 +1020,14 @@ MonoBehaviour:
   KCC: {fileID: 3975634817489101740}
   Weapons: {fileID: 101984459222028861}
   Health: {fileID: 7183023570646524750}
+  HitboxAnimator: {fileID: 9150851264212255868}
   ThirdPersonAnimator: {fileID: 8017927657072056234}
   ThirdPersonWeaponAnimator: {fileID: 3312119741169775460}
   FirstPersonAnimator: {fileID: 1034119322907186271}
   FirstPersonWeaponAnimator: {fileID: 8418441767980720943}
   HitboxRoot: {fileID: 1355241337278460813}
   MoveSpeed: 6
-  JumpForce: 10
+  JumpForce: 6
   JumpSound: {fileID: 8687737406073011353}
   JumpClips:
   - {fileID: 8300000, guid: 70e61e785eeb93844a0c97a435ce413f, type: 3}
@@ -1033,6 +1036,7 @@ MonoBehaviour:
   FirstPersonRoot: {fileID: 3645486570442960686}
   ThirdPersonRoot: {fileID: 8979312531387352113}
   SprayPrefab: {fileID: 0}
+  overrideKcc: 0
   UpGravity: 15
   DownGravity: 25
   GroundAcceleration: 55
@@ -1141,7 +1145,7 @@ MonoBehaviour:
     CCDRadiusMultiplier: 0.75
     AntiJitterDistance: {x: 0.025, y: 0.01}
     PredictionCorrectionSpeed: 30
-    NetworkedInteractions: 8
+    NetworkedInteractions: 32
     CompressNetworkPosition: 0
     ForceSingleOverlapQuery: 0
     SuppressConvexMeshColliders: 0
@@ -3197,6 +3201,21 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4606229406333159841, guid: 080bb32606bb0664c8998003fb572447,
+        type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: b7538c5d24affed48893bd3a90e153fb, type: 3}
+    - target: {fileID: 4606229406333159841, guid: 080bb32606bb0664c8998003fb572447,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 29c212a4a7ed95a4b888a9b23cd5b3b9, type: 2}
+    - target: {fileID: 4606229406333159841, guid: 080bb32606bb0664c8998003fb572447,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5849280161938882423, guid: 080bb32606bb0664c8998003fb572447,
         type: 3}
       propertyPath: m_Layer
@@ -4033,6 +4052,12 @@ MonoBehaviour:
   Root: {fileID: 0}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   DamageMultiplier: 2
+--- !u!95 &9150851264212255868 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4606229406333159841, guid: 080bb32606bb0664c8998003fb572447,
+    type: 3}
+  m_PrefabInstance: {fileID: 4689029517530631645}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5817586930910222789
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4102,6 +4127,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Item_TerraformerWeapon_1P
       objectReference: {fileID: 0}
+    - target: {fileID: 4916892590103139608, guid: 8e1f680fb43698c4ca7d7f9f8626deb9,
+        type: 3}
+      propertyPath: m_PlayableAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ca438700669ae554a9307ba0dab6b47d,
+        type: 2}
     m_RemovedComponents:
     - {fileID: 2751733230677623305, guid: 8e1f680fb43698c4ca7d7f9f8626deb9, type: 3}
     - {fileID: 2760654382110910700, guid: 8e1f680fb43698c4ca7d7f9f8626deb9, type: 3}
@@ -5430,6 +5461,12 @@ Transform:
 --- !u!4 &1034119322917075897 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6823697678259689783, guid: 52dd235007d50bc4598d3f524e699f8a,
+    type: 3}
+  m_PrefabInstance: {fileID: 5830836507526914702}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1034119322917075899 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6823697678259689781, guid: 52dd235007d50bc4598d3f524e699f8a,
     type: 3}
   m_PrefabInstance: {fileID: 5830836507526914702}
   m_PrefabAsset: {fileID: 0}

@@ -7,7 +7,7 @@ namespace FPS_personal_project
 {
 
 
-    [CreateAssetMenu(fileName = "HitscanEffectTypeDefinition", menuName = "FPS Sample/Effect/HitscanEffectTypeDefinition")]
+    [CreateAssetMenu(fileName = "HitscanEffectTypeDefinition", menuName = "FPS_personal_project/Effect/HitscanEffectTypeDefinition")]
     public class HitscanEffectTypeDefinition : ScriptableObject
     {
         public VisualEffectAsset effect;

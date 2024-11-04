@@ -9,7 +9,7 @@ using Fusion.Addons.SimpleKCC;
 [DefaultExecutionOrder(-10)]
 public sealed class PlayerInput : NetworkBehaviour, IBeforeUpdate
 {
-    //TODO:link this to menu's sensetivity
+    //TODO:link this to menu's sensetivity--linked with settings, don't have a menu right now..
     public static float LookSensitivity = 50f;
 
     private NetworkedInput _accumulatedInput;
