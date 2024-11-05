@@ -53,8 +53,8 @@ namespace FPS_personal_project
         private int _jumpCount { get; set; }
         [Networked]
         private Vector3 _moveVelocity { get; set; }
-        [Networked]
-        private Vector3 _animVelocity { get; set; }
+
+        public Vector3 _animVelocity;
 
         private int _visibleJumpCount;
         [Networked]
@@ -143,22 +143,23 @@ namespace FPS_personal_project
                 MovePlayer();
                 RefreshCamera();
             }
+            
             /* if(Runner.IsForward)
              {
                  var moveVelocity = GetAnimationMoveVelocity();
                  ThirdPersonNetworkAnimator.Animator.SetFloat("MoveX", moveVelocity.x, 0.05f, Time.deltaTime);
                  ThirdPersonNetworkAnimator.Animator.SetFloat("MoveZ", moveVelocity.z, 0.05f, Time.deltaTime);
              }*/
-            
+
         }
 
         public override void Render()
         {
             if (_sceneObjects.Gameplay.State == EGamePlayState.Finished)
                 return;
-           
-           if(HasInputAuthority)
-                _animVelocity = GetAnimationMoveVelocity();
+
+            _animVelocity = GetAnimationMoveVelocity();
+          
 
             SetThirdPersonAnimBool("AnimState_IsAlive", Health.IsAlive);
             SetThirdPersonAnimBool("AnimState_InAir", !KCC.FixedData.IsGrounded);

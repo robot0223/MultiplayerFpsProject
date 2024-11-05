@@ -20,6 +20,11 @@ using ParrelSync;
 public class MatchmakerClient : MonoBehaviour
 {
     private string _ticketId;
+    public static bool IsMatchmaking = false;
+    public static string MatchmakingStatus;
+#if UNITY_EDITOR
+    public static bool MatchMaked = false;
+#endif  
 
     private void Awake()
     {
@@ -71,7 +76,8 @@ public class MatchmakerClient : MonoBehaviour
 
     public void StartClient()
     {
-        CreateATicket();
+        if(!IsMatchmaking)
+            CreateATicket();
     }
 
     private async void CreateATicket()
@@ -92,6 +98,7 @@ public class MatchmakerClient : MonoBehaviour
         var ticketResponse = await MatchmakerService.Instance.CreateTicketAsync(players, options) ;
         _ticketId = ticketResponse.Id;
         Debug.Log($"ticket Id:{_ticketId}");
+        IsMatchmaking = true;
         PollTicketStatus();
 
     }
@@ -114,16 +121,23 @@ public class MatchmakerClient : MonoBehaviour
             {
                 case StatusOptions.Found:
                     gotAssignment = true;
+                    MatchmakingStatus = "MatchFound";
                     TicketAssigned(multiplayAssignment);
                     break;
                 case StatusOptions.InProgress:
+                    MatchmakingStatus = "Matchmaking....";
+                    IsMatchmaking = true;
                     break;
                 case StatusOptions.Failed:
                     gotAssignment = true;
+                    IsMatchmaking = false;
+                    MatchmakingStatus = "Matchmaking Failed";
                     Debug.LogError($"Failed to get ticket status. Error: {multiplayAssignment.Message}");
                     break;
                 case StatusOptions.Timeout:
                     gotAssignment = true;
+                    MatchmakingStatus = "Matchmaking Timed out";
+                    IsMatchmaking = false;
                     Debug.LogError("Failed to get ticket stauts. Timed out");
                     break;
                 default:
@@ -139,18 +153,24 @@ public class MatchmakerClient : MonoBehaviour
         Debug.Log($"Ticket Assigned ip:{assignment.Ip} port:{assignment.Port}");
         NetworkRunnerHandler.targetIp = assignment.Ip;
         NetworkRunnerHandler.targetPort = assignment.Port;
+
+#if UNITY_EDITOR
+        MatchMaked = true;
+#endif
         //start logic.. for now it switches scene.
-        StartCoroutine(WaitForServerLoadAndExecute(10));
+        SceneManager.LoadScene("Level_00_Main");
         
+        //StartCoroutine(WaitForServerLoadAndExecute(10));
+
     }
 
-    IEnumerator WaitForServerLoadAndExecute(int time)
+    /*IEnumerator WaitForServerLoadAndExecute(int time)
     {
         Debug.Log("here front");
         yield return new WaitForSeconds(time);
         SceneManager.LoadScene("Level_00_Main");
         Debug.Log("Here,(back)");
-    }
+    }*/
 
     [Serializable]
     public class MatchmakingPlayerData//used with rules!

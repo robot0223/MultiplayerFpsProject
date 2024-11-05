@@ -8,6 +8,7 @@ public class UIMainMenuView : MonoBehaviour
 {
     private MainMenuUI _mainMenuUI;
     private UILoadingScreen _loadingScreen;
+    public UIMatchmakingScreen MatchMakingScreen;
     List<AsyncOperation> scenesToLoad = new List<AsyncOperation>();
 
     private void OnEnable()
@@ -16,28 +17,33 @@ public class UIMainMenuView : MonoBehaviour
         _loadingScreen = _mainMenuUI.LoadingScreen;
     }
 
-    public void OnClickPlay()
+    private void Update()
     {
-       _loadingScreen.gameObject.SetActive(true);
-        
-        scenesToLoad.Add(SceneManager.LoadSceneAsync("Level_00_Main",LoadSceneMode.Single));
-        StartCoroutine(UpdateLoadingScreen());
-
+        MatchMakingScreen.gameObject.SetActive (MatchmakerClient.IsMatchmaking);
     }
 
-    IEnumerator UpdateLoadingScreen()
-    {
-        float totalProgress = 0f;
-        for(int i = 0;i<scenesToLoad.Count;i++)
-        {
-            while (!scenesToLoad[i].isDone)
-            {
-                totalProgress += scenesToLoad[i].progress;
-                _loadingScreen.loadingImage.fillAmount = totalProgress/scenesToLoad.Count;
-                yield return null;
-            }
-        }
-    }
-    
+    /* public void OnClickPlay()
+     {
+        _loadingScreen.gameObject.SetActive(true);
+
+         scenesToLoad.Add(SceneManager.LoadSceneAsync("Level_00_Main",LoadSceneMode.Single));
+         StartCoroutine(UpdateLoadingScreen());
+
+     }
+
+     IEnumerator UpdateLoadingScreen()
+     {
+         float totalProgress = 0f;
+         for(int i = 0;i<scenesToLoad.Count;i++)
+         {
+             while (!scenesToLoad[i].isDone)
+             {
+                 totalProgress += scenesToLoad[i].progress;
+                 _loadingScreen.loadingImage.fillAmount = totalProgress/scenesToLoad.Count;
+                 yield return null;
+             }
+         }
+     }*/
+
 
 }

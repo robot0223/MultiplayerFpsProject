@@ -183,6 +183,11 @@ namespace FPS_personal_project
 
             }
 
+            if(State == EGamePlayState.Finished && ActivePlayers <1)
+            {
+                Application.Quit(0);
+            }
+
         }
 
         public override void Render()

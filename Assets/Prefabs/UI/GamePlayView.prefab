@@ -403,6 +403,7 @@ GameObject:
   - component: {fileID: 6674504894979937241}
   - component: {fileID: 226064984471722438}
   - component: {fileID: 3982337135493503521}
+  - component: {fileID: 2807106051936614584}
   m_Layer: 5
   m_Name: LeadTaken
   m_TagString: Untagged
@@ -556,6 +557,18 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!225 &2807106051936614584
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3379962590918900814}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3897612935568453523
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,6 +731,7 @@ GameObject:
   - component: {fileID: 946836351128105397}
   - component: {fileID: 8559922298569144404}
   - component: {fileID: 7744589678750715936}
+  - component: {fileID: 4984564203760467534}
   m_Layer: 5
   m_Name: GamePlayStart
   m_TagString: Untagged
@@ -871,6 +885,18 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!225 &4984564203760467534
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5156823936600819519}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5466791343647092128
 GameObject:
   m_ObjectHideFlags: 0
@@ -1015,9 +1041,6 @@ MonoBehaviour:
   killFeedItem: {fileID: 6036503830290767826, guid: 1c71bd3e99f1c3143b0bb95919e72536,
     type: 3}
   FeedLifetime: 6
-  WeaponIcons:
-  - {fileID: 21300000, guid: a5653c58086f51342b3eccfafca4e7ba, type: 3}
-  - {fileID: 21300000, guid: 8068355d5018a3e4186787a6f40f614a, type: 3}
 --- !u!1 &6847763354380561756
 GameObject:
   m_ObjectHideFlags: 0
@@ -1031,6 +1054,7 @@ GameObject:
   - component: {fileID: 7379800611229710492}
   - component: {fileID: 6281721134108985075}
   - component: {fileID: 1421327775019987353}
+  - component: {fileID: 2739986050137407706}
   m_Layer: 5
   m_Name: RemainingTime1
   m_TagString: Untagged
@@ -1184,6 +1208,18 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!225 &2739986050137407706
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6847763354380561756}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7036022900802927913
 GameObject:
   m_ObjectHideFlags: 0
@@ -1495,6 +1531,7 @@ GameObject:
   - component: {fileID: 8124351271236364381}
   - component: {fileID: 7073228248494124620}
   - component: {fileID: 83145554381702339}
+  - component: {fileID: 7028970908435123334}
   m_Layer: 5
   m_Name: LeadLost
   m_TagString: Untagged
@@ -1648,6 +1685,18 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!225 &7028970908435123334
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7675884776024975461}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8379788029598438690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1661,6 +1710,7 @@ GameObject:
   - component: {fileID: 8645071537517338633}
   - component: {fileID: 3059021814292798784}
   - component: {fileID: 1014913098891023726}
+  - component: {fileID: 2665312147394978481}
   m_Layer: 5
   m_Name: RemainingTime2
   m_TagString: Untagged
@@ -1814,6 +1864,18 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!225 &2665312147394978481
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8379788029598438690}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8597661820385623168
 GameObject:
   m_ObjectHideFlags: 0
@@ -1827,6 +1889,7 @@ GameObject:
   - component: {fileID: 2376205457335628265}
   - component: {fileID: 6590384335416614192}
   - component: {fileID: 8348508774788393705}
+  - component: {fileID: 161983526038992030}
   m_Layer: 5
   m_Name: RemainingTime3
   m_TagString: Untagged
@@ -1980,6 +2043,18 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!225 &161983526038992030
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8597661820385623168}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8931722270269929321
 GameObject:
   m_ObjectHideFlags: 0

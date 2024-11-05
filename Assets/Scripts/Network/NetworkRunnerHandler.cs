@@ -95,7 +95,7 @@ public class NetworkRunnerHandler : MonoBehaviour
             objectProvider = runner.gameObject.AddComponent<NetworkObjectProviderDefault>();
         }
 
-        Debug.LogError(scene);
+        
 
         var sceneInfo = new NetworkSceneInfo();
         if (scene.IsValid)
@@ -107,13 +107,14 @@ public class NetworkRunnerHandler : MonoBehaviour
         runner.ProvideInput = true;
 
         FusionAppSettings appSettings = PhotonAppSettings.Global.AppSettings;
-      
+        string fixedRegion;
+        int port;
 #if UNITY_SERVER
-        string fixedRegion = GetRegionFromStartupArgs();
+        fixedRegion = GetRegionFromStartupArgs();
         if (fixedRegion != "")
             appSettings.FixedRegion = fixedRegion;
 
-        int port = GetServerPortFromStartupArgs();
+        port = GetServerPortFromStartupArgs();
         if(port!= 0)
         {
             appSettings.Port = port;
@@ -122,7 +123,38 @@ public class NetworkRunnerHandler : MonoBehaviour
       
          Debug.LogWarning($"InitializeNetworkRunner with port {port} and region {fixedRegion} done");
 
-  #endif
+#endif
+#if UNITY_EDITOR
+        if(MatchmakerClient.MatchMaked)
+        {
+             fixedRegion = GetRegionFromStartupArgs();
+            if (fixedRegion != "")
+                appSettings.FixedRegion = fixedRegion;
+
+             port = GetServerPortFromStartupArgs();
+            if (port != 0)
+            {
+                appSettings.Port = port;
+            }
+
+
+            Debug.LogWarning($"InitializeNetworkRunner with port {port} and region {fixedRegion} done");
+        }
+#endif
+#if !UNITY_SERVER && !UNITY_EDITOR
+         fixedRegion = GetRegionFromStartupArgs();
+        if (fixedRegion != "")
+            appSettings.FixedRegion = fixedRegion;
+
+         port = GetServerPortFromStartupArgs();
+        if (port != 0)
+        {
+            appSettings.Port = port;
+        }
+
+
+        Debug.LogWarning($"InitializeNetworkRunner with port {port} and region {fixedRegion} done");
+#endif
 
 
 

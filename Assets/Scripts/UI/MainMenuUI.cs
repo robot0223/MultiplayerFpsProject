@@ -14,6 +14,7 @@ namespace FPS_personal_project
         public GameObject MenuView;
         public UISettingsView SettingsView;
         public UILoadingScreen LoadingScreen;
+        
 
         private void Awake()
         {

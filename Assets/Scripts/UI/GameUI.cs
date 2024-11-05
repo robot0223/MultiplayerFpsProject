@@ -17,7 +17,7 @@ namespace FPS_personal_project
         private EGamePlayState _preState;
         public UIPlayerView PlayerView;
         public UIGamePlayView GameplayView;
-       // public UIGameOverView GameOverView;
+        public UIGameOverView GameOverView;
         public GameObject ScoreboardView;
         public GameObject MenuView;
         public UISettingsView SettingsView;
@@ -26,14 +26,21 @@ namespace FPS_personal_project
 
         public void OnRunnerShutdown(NetworkRunner runner, ShutdownReason reason)
         {
-            /*if (GameOverView.gameObject.activeSelf)
-                return; // Regular shutdown - GameOver already active*/
+            if (GameOverView.gameObject.activeSelf)
+                return; // Regular shutdown - GameOver already active
 
             ScoreboardView.SetActive(false);
             SettingsView.gameObject.SetActive(false);
             MenuView.gameObject.SetActive(false);
 
             DisconnectedView.SetActive(true);
+            StartCoroutine(Delay(3));
+            SceneManager.LoadScene("Level_Menu_Background");
+        }
+
+        public IEnumerator Delay(int time)//TODO:move this to some other helper class;;
+        {
+            yield return new WaitForSecondsRealtime(time);
         }
 
         public void GoToMenu()
@@ -85,7 +92,7 @@ namespace FPS_personal_project
             }
 
             GameplayView.gameObject.SetActive(gameplayActive);
-            //GameOverView.gameObject.SetActive(gameplayActive == false);
+            GameOverView.gameObject.SetActive(gameplayActive == false);
 
             var playerObject = Runner.GetPlayerObject(Runner.LocalPlayer);
             if (playerObject != null)
@@ -115,11 +122,11 @@ namespace FPS_personal_project
                 Cursor.lockState= CursorLockMode.Locked;
                 Cursor.visible = true;
             }
-            /*else if(gameplayActive)
+            else if(gameplayActive)
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-            }*/
+            }
             _preState = State;
         }
 
